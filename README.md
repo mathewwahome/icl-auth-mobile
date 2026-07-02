@@ -35,6 +35,13 @@ Code generation is part of compilation. The `ig-codegen` Gradle plugin runs its 
 
 For iOS, open [`iosApp/`](./iosApp) in Xcode and run, or use the run-configuration widget in a Kotlin Multiplatform IDE.
 
+## Auth library
+
+The auth UI and login client live in [`icl-auth/`](./icl-auth).
+
+For setup and usage details, including app initialization, endpoint configuration, and `LoginScreen`
+integration, see [`icl-auth/README.md`](./icl-auth/README.md).
+
 ## From FHIR data to view state
 
 A screen never consumes a raw FHIR resource. It consumes a typed *view-state* — a flat, serializable data class containing exactly the fields the screen needs. View-state is produced by a configuration-driven pipeline:

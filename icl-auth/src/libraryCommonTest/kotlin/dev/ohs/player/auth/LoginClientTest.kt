@@ -20,11 +20,16 @@ import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
+import kotlin.time.Instant
 import kotlinx.coroutines.test.runTest
 
 class LoginClientTest {
@@ -68,19 +73,40 @@ class LoginClientTest {
 
   @Test
   fun login_returnsSuccessForSuccessfulResponses() = runTest {
+    IclAuth.clear()
+    val sessionStore = InMemoryAuthSessionStore.also { it.session = null }
     val config =
       resolveLoginConfig(
         screenConfig = LoginScreenConfig(endpoint = "/login"),
-        authConfig = IclAuthConfig(baseAuthUrl = "https://auth.example.com"),
+        authConfig =
+          IclAuthConfig(baseAuthUrl = "https://auth.example.com", sessionStore = sessionStore),
       )
     val client =
       HttpClient(
-        MockEngine {
-          respond(
-            content = """{"token":"abc123"}""",
-            status = HttpStatusCode.OK,
-            headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
-          )
+        MockEngine { request ->
+          when {
+            request.method == HttpMethod.Post && request.url.encodedPath == "/login" ->
+              respond(
+                content =
+                  """{"access_token":"abc123","refresh_token":"refresh123","expires_in":15552000,"refresh_expires_in":72000,"token_type":"Bearer","session_state":"session-1","scope":"email organization profile openid","firstLogin":false,"status":"success"}""",
+                status = HttpStatusCode.OK,
+                headers =
+                  headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
+              )
+
+            request.method == HttpMethod.Get && request.url.encodedPath == "/provider/me" -> {
+              assertEquals("Bearer abc123", request.headers[HttpHeaders.Authorization])
+              respond(
+                content =
+                  """{"status":"success","user":{"firstName":"Japheth","lastName":"Kiprotich","fhirPractitionerId":"cd40811a-b174-45d0-ad63-6ff56ed249df","practitionerRole":"ADMINISTRATOR","role":"ADMINISTRATOR","status":true,"id":"cd40811a-b174-45d0-ad63-6ff56ed249df","idNumber":"32645167","fullNames":"Japheth Kiprotich","phone":"0724743788","email":"jkiprotich@intellisoftkenya.com","locationInfo":{"facility":"","facilityName":"","ward":"","wardName":"","subCounty":"","subCountyName":"","county":"","countyName":"","country":"0","countryName":"Kenya"}}}""",
+                status = HttpStatusCode.OK,
+                headers =
+                  headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
+              )
+            }
+
+            else -> error("Unexpected request: ${request.method.value} ${request.url}")
+          }
         }
       ) {
         expectSuccess = false
@@ -92,7 +118,165 @@ class LoginClientTest {
 
       val success = assertIs<LoginAttemptResult.Success>(result)
       assertEquals(200, success.value.statusCode)
-      assertEquals("""{"token":"abc123"}""", success.value.responseBody)
+      val tokenResponse = assertNotNull(success.value.tokenResponse)
+      assertEquals("abc123", tokenResponse.accessToken)
+      assertEquals("refresh123", tokenResponse.refreshToken)
+      assertEquals(15_552_000L, tokenResponse.expiresIn)
+      assertEquals(false, tokenResponse.firstLogin)
+      assertEquals("success", tokenResponse.status)
+      assertEquals("Bearer abc123", success.value.session?.authorizationHeader)
+      assertEquals("Bearer abc123", sessionStore.session?.authorizationHeader)
+      val providerProfile = assertNotNull(success.value.providerProfile)
+      assertEquals("success", providerProfile.status)
+      val providerUser = assertNotNull(providerProfile.user)
+      assertEquals("Japheth", providerUser.firstName)
+      assertEquals("ADMINISTRATOR", providerUser.role)
+      assertTrue(providerUser.status == true)
+      assertEquals("0", providerUser.locationInfo?.country)
+      assertEquals("Kenya", providerUser.locationInfo?.countryName)
+      assertEquals("Japheth", IclAuth.currentProviderUser()?.firstName)
+    } finally {
+      client.close()
+    }
+  }
+
+  @Test
+  fun parseLoginTokenResponse_extractsKnownTokenFields() {
+    val tokenResponse =
+      parseLoginTokenResponse(
+        """{"access_token":"access-1","expires_in":15552000,"refresh_expires_in":72000,"refresh_token":"refresh-1","token_type":"Bearer","not-before-policy":0,"session_state":"session-123","scope":"email organization profile openid","firstLogin":false,"status":"success"}"""
+      )
+
+    assertNotNull(tokenResponse)
+    assertEquals("access-1", tokenResponse.accessToken)
+    assertEquals(15_552_000L, tokenResponse.expiresIn)
+    assertEquals(72_000L, tokenResponse.refreshExpiresIn)
+    assertEquals("refresh-1", tokenResponse.refreshToken)
+    assertEquals("Bearer", tokenResponse.tokenType)
+    assertEquals(0L, tokenResponse.notBeforePolicy)
+    assertEquals("session-123", tokenResponse.sessionState)
+    assertEquals("email organization profile openid", tokenResponse.scope)
+    assertEquals(false, tokenResponse.firstLogin)
+    assertEquals("success", tokenResponse.status)
+  }
+
+  @Test
+  fun parseProviderProfile_extractsKnownUserFields() {
+    val providerProfile =
+      parseProviderProfile(
+        """{"status":"success","user":{"firstName":"Japheth","lastName":"Kiprotich","fhirPractitionerId":"cd40811a-b174-45d0-ad63-6ff56ed249df","practitionerRole":"ADMINISTRATOR","role":"ADMINISTRATOR","status":true,"id":"cd40811a-b174-45d0-ad63-6ff56ed249df","idNumber":"32645167","fullNames":"Japheth Kiprotich","phone":"0724743788","email":"jkiprotich@intellisoftkenya.com","locationInfo":{"facility":"","facilityName":"","ward":"","wardName":"","subCounty":"","subCountyName":"","county":"","countyName":"","country":"0","countryName":"Kenya"}}}"""
+      )
+
+    assertNotNull(providerProfile)
+    assertEquals("success", providerProfile.status)
+    val providerUser = assertNotNull(providerProfile.user)
+    assertEquals("Japheth", providerUser.firstName)
+    assertEquals("Kiprotich", providerUser.lastName)
+    assertEquals("ADMINISTRATOR", providerUser.practitionerRole)
+    assertEquals(true, providerUser.status)
+    assertEquals("", providerUser.locationInfo?.facility)
+    assertEquals("0", providerUser.locationInfo?.country)
+    assertEquals("Kenya", providerUser.locationInfo?.countryName)
+  }
+
+  @Test
+  fun toAuthSession_tracksExpiryAndHeader() {
+    val issuedAt = Instant.parse("2026-07-02T09:00:00Z")
+
+    val session =
+      LoginTokenResponse(
+          accessToken = "access-1",
+          expiresIn = 3600,
+          refreshExpiresIn = 7200,
+          refreshToken = "refresh-1",
+          tokenType = "Bearer",
+          sessionState = "session-123",
+          scope = "openid profile",
+        )
+        .toAuthSession(issuedAt = issuedAt)
+
+    assertNotNull(session)
+    assertEquals("Bearer access-1", session.authorizationHeader)
+    assertEquals(Instant.parse("2026-07-02T10:00:00Z"), session.accessTokenExpiresAt)
+    assertEquals(Instant.parse("2026-07-02T11:00:00Z"), session.refreshTokenExpiresAt)
+  }
+
+  @Test
+  fun currentAuthorizationHeader_returnsNullAfterExpiry() {
+    val sessionStore =
+      object : AuthSessionStore {
+        override var session: AuthSession? = null
+      }
+    IclAuth.initialize(
+      IclAuthConfig(baseAuthUrl = "https://auth.example.com", sessionStore = sessionStore)
+    )
+    val issuedAt = Instant.parse("2026-07-02T09:00:00Z")
+    IclAuth.updateSession(
+      AuthSession(
+        accessToken = "access-1",
+        tokenType = "Bearer",
+        issuedAt = issuedAt,
+        accessTokenExpiresAt = Instant.parse("2026-07-02T10:00:00Z"),
+      )
+    )
+
+    assertEquals(
+      "Bearer access-1",
+      IclAuth.currentAuthorizationHeader(now = Instant.parse("2026-07-02T09:30:00Z")),
+    )
+    assertNull(IclAuth.currentAuthorizationHeader(now = Instant.parse("2026-07-02T10:00:00Z")))
+    assertEquals(
+      emptyMap(),
+      IclAuth.currentAuthHeaders(now = Instant.parse("2026-07-02T10:00:00Z")),
+    )
+  }
+
+  @Test
+  fun login_returnsFailureWhenProviderProfileRequestFails() = runTest {
+    IclAuth.clear()
+    val sessionStore = InMemoryAuthSessionStore.also { it.session = null }
+    val config =
+      resolveLoginConfig(
+        screenConfig = LoginScreenConfig(endpoint = "/login"),
+        authConfig =
+          IclAuthConfig(baseAuthUrl = "https://auth.example.com", sessionStore = sessionStore),
+      )
+    val client =
+      HttpClient(
+        MockEngine { request ->
+          when {
+            request.method == HttpMethod.Post && request.url.encodedPath == "/login" ->
+              respond(
+                content = """{"access_token":"abc123","token_type":"Bearer","status":"success"}""",
+                status = HttpStatusCode.OK,
+                headers =
+                  headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
+              )
+
+            request.method == HttpMethod.Get && request.url.encodedPath == "/provider/me" ->
+              respond(
+                content = """{"message":"Unable to load provider profile"}""",
+                status = HttpStatusCode.InternalServerError,
+                headers =
+                  headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
+              )
+
+            else -> error("Unexpected request: ${request.method.value} ${request.url}")
+          }
+        }
+      ) {
+        expectSuccess = false
+      }
+    val service = LoginService(client)
+
+    try {
+      val result = service.login(config = config, username = "nurse", password = "secret")
+
+      val failure = assertIs<LoginAttemptResult.Failure>(result)
+      assertEquals("Unable to load provider profile", failure.value.message)
+      assertEquals(500, failure.value.statusCode)
+      assertNull(sessionStore.session)
+      assertNull(IclAuth.currentProviderProfile())
     } finally {
       client.close()
     }

@@ -46,7 +46,7 @@ private val AUTH_CONFIG = IclAuthConfig(baseAuthUrl = "https://auth.nphiis.healt
 private val LOGIN_SCREEN_CONFIG =
   LoginScreenConfig(
     endpoint = "/provider/login",
-    showLogo = false,
+    showLogo = true,
     showFooter = true,
     showForgotPassword = true,
   )
@@ -58,7 +58,7 @@ fun App() {
 
   CompositionLocalProvider(LocalViewRegistry provides registry) {
     OhsPlayerTheme {
-      var isLoggedIn by rememberSaveable { mutableStateOf(false) }
+      var isLoggedIn by rememberSaveable { mutableStateOf(IclAuth.hasValidAccessToken()) }
 
       if (isLoggedIn) {
         ReferenceAppNavigation()
