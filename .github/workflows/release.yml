@@ -1,0 +1,406 @@
+# Release pipeline. Triggered by semantically versioned tags (vX.Y.Z[-suffix]).
+#
+# Action versions are pinned to majors here for readability. To harden
+# against tag-hijack supply-chain attacks, run a tool like `pin-github-action`
+# or enable Dependabot (.github/dependabot.yml with `package-ecosystem: github-actions`)
+# to convert these to commit SHAs.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to simulate (e.g. v1.2.3). Dry run - builds & signs all platforms and uploads artifacts, but does NOT publish a Release or deploy Pages.'
+        required: true
+        type: string
+
+concurrency:
+  group: release-${{ github.event_name }}-${{ github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    name: Preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.parse.outputs.version }}
+      version_name: ${{ steps.parse.outputs.version_name }}
+      version_code: ${{ steps.parse.outputs.version_code }}
+      is_prerelease: ${{ steps.parse.outputs.is_prerelease }}
+      is_dry_run: ${{ steps.parse.outputs.is_dry_run }}
+      signing_enabled: ${{ steps.parse.outputs.signing_enabled }}
+    steps:
+      - id: parse
+        name: Resolve tag and signing mode
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_TAG: ${{ inputs.tag }}
+          PUSH_REF_NAME: ${{ github.ref_name }}
+          RUN_NUMBER: ${{ github.run_number }}
+          SIGN_RELEASE_BUILDS: ${{ vars.SIGN_RELEASE_BUILDS }}
+        run: |
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            TAG="$DISPATCH_TAG"
+            DRY_RUN=true
+          else
+            TAG="$PUSH_REF_NAME"
+            DRY_RUN=false
+          fi
+
+          if ! printf '%s' "$TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9.-]+)?$'; then
+            echo "::error::Tag '$TAG' must match vMAJOR.MINOR.PATCH or vMAJOR.MINOR.PATCH-suffix"
+            exit 1
+          fi
+
+          VERSION_NAME="${TAG#v}"
+          # Per Semantic Versioning 2.0.0 section 9, any hyphen-suffix is a pre-release.
+          case "$TAG" in
+            *-*) IS_PRERELEASE=true ;;
+            *)   IS_PRERELEASE=false ;;
+          esac
+
+          # SIGN_RELEASE_BUILDS is a repository variable. Default ON; set to "false" to opt out.
+          if [ "$SIGN_RELEASE_BUILDS" = "false" ]; then
+            SIGNING_ENABLED=false
+            echo "::warning::SIGN_RELEASE_BUILDS=false; producing UNSIGNED Android artifacts"
+          else
+            SIGNING_ENABLED=true
+          fi
+
+          {
+            echo "version=$TAG"
+            echo "version_name=$VERSION_NAME"
+            echo "version_code=$RUN_NUMBER"
+            echo "is_prerelease=$IS_PRERELEASE"
+            echo "is_dry_run=$DRY_RUN"
+            echo "signing_enabled=$SIGNING_ENABLED"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Verify required Android signing secrets are set
+        if: steps.parse.outputs.signing_enabled == 'true'
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+        run: |
+          missing=()
+          [ -z "$ANDROID_KEYSTORE_BASE64" ] && missing+=("ANDROID_KEYSTORE_BASE64")
+          [ -z "$ANDROID_KEY_ALIAS" ] && missing+=("ANDROID_KEY_ALIAS")
+          [ -z "$ANDROID_KEY_PASSWORD" ] && missing+=("ANDROID_KEY_PASSWORD")
+          [ -z "$ANDROID_STORE_PASSWORD" ] && missing+=("ANDROID_STORE_PASSWORD")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Missing repository secrets: ${missing[*]}. Set them, or set repo variable SIGN_RELEASE_BUILDS=false to skip signing."
+            exit 1
+          fi
+
+  build-android:
+    name: Build Android (APK)
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: gradle/actions/wrapper-validation@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Decode keystore
+        if: needs.preflight.outputs.signing_enabled == 'true'
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          test -s "$RUNNER_TEMP/release.jks" || { echo "::error::Decoded keystore is empty"; exit 1; }
+
+      - name: Build APK
+        env:
+          VERSION_NAME: ${{ needs.preflight.outputs.version_name }}
+          VERSION_CODE: ${{ needs.preflight.outputs.version_code }}
+          ANDROID_KEYSTORE_PATH: ${{ needs.preflight.outputs.signing_enabled == 'true' && format('{0}/release.jks', runner.temp) || '' }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+        run: ./gradlew :ohs-player-reference-app:assembleRelease
+
+      - name: Stage outputs
+        shell: bash
+        run: |
+          shopt -s nullglob
+          mkdir -p out
+          VN="${{ needs.preflight.outputs.version_name }}"
+          if [ "${{ needs.preflight.outputs.signing_enabled }}" = "true" ]; then
+            SUFFIX=""
+          else
+            SUFFIX="-unsigned"
+          fi
+
+          # Fail loud if AGP ever produces 0 or >1 outputs (e.g. someone enables
+          # ABI/density splits) — the single-name cp below would silently corrupt.
+          apks=(ohs-player-reference-app/build/outputs/apk/release/*.apk)
+          if [ ${#apks[@]} -ne 1 ]; then
+            echo "::error::Expected exactly one APK, got ${#apks[@]}: ${apks[*]}"
+            echo "::error::If splits/flavors were enabled, update this step to rename each variant."
+            exit 1
+          fi
+
+          cp "${apks[0]}" "out/ohs-player-${VN}${SUFFIX}.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: out/*
+          if-no-files-found: error
+          retention-days: 7
+
+  build-desktop:
+    name: Build Desktop (${{ matrix.label }})
+    needs: preflight
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            label: Linux deb
+            task: ':ohs-player-reference-app:packageDeb'
+            glob: 'ohs-player-reference-app/build/compose/binaries/main/deb/*.deb'
+            artifact: linux-deb
+          - os: ubuntu-latest
+            label: Linux rpm
+            task: ':ohs-player-reference-app:packageRpm'
+            glob: 'ohs-player-reference-app/build/compose/binaries/main/rpm/*.rpm'
+            artifact: linux-rpm
+          - os: windows-latest
+            label: Windows msi
+            task: ':ohs-player-reference-app:packageMsi'
+            glob: 'ohs-player-reference-app/build/compose/binaries/main/msi/*.msi'
+            artifact: windows-msi
+          # macos-latest is Apple Silicon — the .dmg is arm64-only. Intel Macs
+          # need the portable Linux tarball or a future universal build.
+          - os: macos-latest
+            label: macOS dmg
+            task: ':ohs-player-reference-app:packageDmg'
+            glob: 'ohs-player-reference-app/build/compose/binaries/main/dmg/*.dmg'
+            artifact: macos-dmg
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: gradle/actions/wrapper-validation@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Install rpmbuild
+        if: matrix.artifact == 'linux-rpm'
+        run: sudo apt-get update && sudo apt-get install -y rpm
+
+      - name: Build installer
+        shell: bash
+        env:
+          VERSION_NAME: ${{ needs.preflight.outputs.version_name }}
+        run: ./gradlew ${{ matrix.task }}
+
+      - name: Stage outputs
+        shell: bash
+        env:
+          GLOB: ${{ matrix.glob }}
+          LABEL: ${{ matrix.label }}
+        run: |
+          shopt -s nullglob
+          mkdir -p out
+          # Intentional word-split of $GLOB so bash expands the wildcard.
+          files=( $GLOB )
+          if [ ${#files[@]} -ne 1 ]; then
+            echo "::error::Expected exactly one $LABEL output matching '$GLOB', got ${#files[@]}: ${files[*]}"
+            exit 1
+          fi
+          cp "${files[0]}" out/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: out/*
+          if-no-files-found: error
+          retention-days: 7
+
+  build-linux-tarball:
+    name: Build Linux tarball (portable)
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: gradle/actions/wrapper-validation@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Create distributable app image
+        env:
+          VERSION_NAME: ${{ needs.preflight.outputs.version_name }}
+        run: ./gradlew :ohs-player-reference-app:createDistributable
+
+      - name: Tar up the distributable
+        shell: bash
+        run: |
+          shopt -s nullglob
+          APP_BASE=ohs-player-reference-app/build/compose/binaries/main/app
+          app_dirs=("$APP_BASE"/*)
+          if [ ${#app_dirs[@]} -ne 1 ]; then
+            echo "::error::Expected exactly one app directory in $APP_BASE, got ${#app_dirs[@]}: ${app_dirs[*]}"
+            exit 1
+          fi
+          mkdir -p out
+          tar -C "$APP_BASE" -czf \
+            "out/ohs-player-${{ needs.preflight.outputs.version_name }}-linux-x64.tar.gz" \
+            "$(basename "${app_dirs[0]}")"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-tarball
+          path: out/*.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  # Disabled: the Kotlin/Wasm compile OOMs on ubuntu-latest (16 GB) with -Xmx10g 
+  # for the Kotlin daemon. Defer the task until move to a larger runner or shrink
+  # the bundle. The web preview is currently deployed manually to the `gh-pages` branch.
+  # To re-enable: remove `if: false` here and on `deploy-pages`, and add
+  # `build-web` back to the `release` job's `needs:` list.
+  build-web:
+    name: Build Web (Wasm)
+    needs: preflight
+    if: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: gradle/actions/wrapper-validation@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Build web distribution
+        env:
+          VERSION_NAME: ${{ needs.preflight.outputs.version_name }}
+        run: ./gradlew :ohs-player-reference-app:wasmJsBrowserDistribution
+
+      - name: Zip distribution for the GitHub Release
+        run: |
+          mkdir -p out
+          DIST=ohs-player-reference-app/build/dist/wasmJs/productionExecutable
+          test -d "$DIST" || { echo "::error::Web dist directory missing: $DIST"; exit 1; }
+          (cd "$DIST" && zip -r "$GITHUB_WORKSPACE/out/ohs-player-web-${{ needs.preflight.outputs.version_name }}.zip" .)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-bundle
+          path: out/*.zip
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload Pages artifact
+        if: needs.preflight.outputs.is_dry_run == 'false' && needs.preflight.outputs.is_prerelease == 'false'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ohs-player-reference-app/build/dist/wasmJs/productionExecutable
+
+  # Disabled alongside build-web. See the comment above build-web for the
+  # rationale and the steps to re-enable.
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    needs: [preflight, build-web]
+    if: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  release:
+    name: Publish GitHub Release
+    needs: [preflight, build-android, build-desktop, build-linux-tarball]
+    if: needs.preflight.outputs.is_dry_run == 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Flatten artifacts and generate checksums
+        run: |
+          mkdir -p release
+          find artifacts -type f \( \
+            -name '*.apk' -o \
+            -name '*.deb' -o \
+            -name '*.rpm' -o \
+            -name '*.msi' -o \
+            -name '*.dmg' -o \
+            -name '*.tar.gz' -o \
+            -name '*.zip' \
+          \) -exec cp {} release/ \;
+          test "$(ls -A release)" || { echo "::error::No artifacts to release"; exit 1; }
+          (cd release && sha256sum * > SHA256SUMS.txt)
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.preflight.outputs.version }}
+          name: Release ${{ needs.preflight.outputs.version }}
+          draft: false
+          prerelease: ${{ needs.preflight.outputs.is_prerelease == 'true' }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: release/*

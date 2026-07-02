@@ -1,0 +1,26 @@
+{
+  "resourceType": "http://ohs.dev/StructureDefinition/ViewConfig",
+  "viewType": "GroupHeader",
+  "property": [
+    {
+      "name": "showMemberCount",
+      "type": "boolean",
+      "valueBoolean": true
+    },
+    {
+      "name": "showHeadName",
+      "type": "boolean",
+      "valueBoolean": true
+    },
+    {
+      "name": "elevation",
+      "type": "decimal",
+      "valueDecimal": 2.0
+    },
+    {
+      "name": "padding",
+      "type": "decimal",
+      "valueDecimal": 20.0
+    }
+  ]
+}

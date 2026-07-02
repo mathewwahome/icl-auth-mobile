@@ -1,0 +1,16 @@
+{
+  "resourceType": "http://ohs.dev/StructureDefinition/ViewConfig",
+  "viewType": "AllergyReactionItem",
+  "property": [
+    {
+      "name": "showSeverity",
+      "type": "boolean",
+      "valueBoolean": true
+    },
+    {
+      "name": "showManifestation",
+      "type": "boolean",
+      "valueBoolean": true
+    }
+  ]
+}

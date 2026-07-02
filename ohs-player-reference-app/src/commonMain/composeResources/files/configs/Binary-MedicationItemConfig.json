@@ -1,0 +1,21 @@
+{
+  "resourceType": "http://ohs.dev/StructureDefinition/ViewConfig",
+  "viewType": "MedicationItem",
+  "property": [
+    {
+      "name": "showStatus",
+      "type": "boolean",
+      "valueBoolean": true
+    },
+    {
+      "name": "showDosage",
+      "type": "boolean",
+      "valueBoolean": true
+    },
+    {
+      "name": "compact",
+      "type": "boolean",
+      "valueBoolean": false
+    }
+  ]
+}

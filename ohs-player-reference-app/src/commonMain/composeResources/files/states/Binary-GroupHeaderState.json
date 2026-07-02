@@ -1,0 +1,15 @@
+{
+  "resourceType": "http://ohs.dev/StructureDefinition/ViewJoinMap",
+  "joins": [
+    {
+      "view": "RelatedPerson",
+      "from": "revIncluded",
+      "resource": "RelatedPerson",
+      "searchParam": "patient"
+    }
+  ],
+  "name": "groupHeader",
+  "from": "root",
+  "resource": "Group",
+  "view": "Group"
+}

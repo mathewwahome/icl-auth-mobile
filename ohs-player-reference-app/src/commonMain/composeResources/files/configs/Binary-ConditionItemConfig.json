@@ -1,0 +1,16 @@
+{
+  "resourceType": "http://ohs.dev/StructureDefinition/ViewConfig",
+  "viewType": "ConditionItem",
+  "property": [
+    {
+      "name": "showOnsetDate",
+      "type": "boolean",
+      "valueBoolean": true
+    },
+    {
+      "name": "showStatus",
+      "type": "boolean",
+      "valueBoolean": true
+    }
+  ]
+}
