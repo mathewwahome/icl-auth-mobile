@@ -1,0 +1,16 @@
+{
+  "resourceType": "http://ohs.dev/StructureDefinition/ViewJoinMap",
+  "joins": [
+    {
+      "view": "PatientSummary",
+      "from": "included",
+      "resource": "Patient",
+      "searchParam": "patient",
+      "matchKey": "allergyPatientRef"
+    }
+  ],
+  "name": "allergyReaction",
+  "from": "revIncluded",
+  "resource": "AllergyIntolerance",
+  "view": "AllergyReaction"
+}

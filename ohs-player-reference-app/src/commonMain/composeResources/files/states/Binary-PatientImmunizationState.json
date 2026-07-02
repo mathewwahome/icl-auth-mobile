@@ -1,0 +1,16 @@
+{
+  "resourceType": "http://ohs.dev/StructureDefinition/ViewJoinMap",
+  "joins": [
+    {
+      "view": "PatientSummary",
+      "from": "included",
+      "resource": "Patient",
+      "searchParam": "patient",
+      "matchKey": "immunizationPatientRef"
+    }
+  ],
+  "name": "patientImmunization",
+  "from": "revIncluded",
+  "resource": "Immunization",
+  "view": "Immunization"
+}

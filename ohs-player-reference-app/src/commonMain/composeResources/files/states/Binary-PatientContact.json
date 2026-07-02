@@ -1,0 +1,46 @@
+{
+  "resourceType": "https://sql-on-fhir.org/ig/StructureDefinition/ViewDefinition",
+  "url": "http://ohs.dev/ViewDefinition/PatientContact",
+  "fhirVersion": [
+    "4.0.1"
+  ],
+  "select": [
+    {
+      "column": [
+        {
+          "name": "patientId",
+          "path": "id",
+          "type": "http://hl7.org/fhir/StructureDefinition/string"
+        }
+      ]
+    },
+    {
+      "column": [
+        {
+          "name": "contactGivenName",
+          "path": "name.given.first()",
+          "type": "http://hl7.org/fhir/StructureDefinition/string"
+        },
+        {
+          "name": "contactFamilyName",
+          "path": "name.family",
+          "type": "http://hl7.org/fhir/StructureDefinition/string"
+        },
+        {
+          "name": "contactPhone",
+          "path": "telecom.where(system = 'phone').value.first()",
+          "type": "http://hl7.org/fhir/StructureDefinition/string"
+        },
+        {
+          "name": "contactRelationship",
+          "path": "relationship.coding.display.first()",
+          "type": "http://hl7.org/fhir/StructureDefinition/string"
+        }
+      ],
+      "forEachOrNull": "contact"
+    }
+  ],
+  "name": "PatientContact",
+  "status": "active",
+  "resource": "Patient"
+}

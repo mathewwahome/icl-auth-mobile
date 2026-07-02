@@ -1,0 +1,6012 @@
+{
+  "resourceType": "Bundle",
+  "id": "ips-sample-data",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p1",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2015-0342"
+          }
+        ],
+        "name": [
+          {
+            "family": "Diallo",
+            "given": [
+              "Amina"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1990-03-14",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+221 77 123 4567"
+          },
+          {
+            "system": "email",
+            "value": "amina.diallo@example.com"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp1"
+            }
+          }
+        ],
+        "contact": [
+          {
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                    "code": "C",
+                    "display": "Emergency Contact"
+                  }
+                ]
+              }
+            ],
+            "name": {
+              "family": "Diallo",
+              "given": [
+                "Oumar"
+              ]
+            },
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "+221 77 987 0001"
+              }
+            ]
+          },
+          {
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                    "code": "N",
+                    "display": "Next-of-kin"
+                  }
+                ]
+              }
+            ],
+            "name": {
+              "family": "Diallo",
+              "given": [
+                "Fatoumata"
+              ]
+            },
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "+221 77 987 0002"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p2",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2010-0789"
+          }
+        ],
+        "name": [
+          {
+            "family": "Mensah",
+            "given": [
+              "Kofi"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1985-11-02",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+233 24 567 8901"
+          },
+          {
+            "system": "email",
+            "value": "kwame.mensah@example.com"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp2"
+            }
+          }
+        ],
+        "contact": [
+          {
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                    "code": "N",
+                    "display": "Next-of-kin"
+                  }
+                ]
+              }
+            ],
+            "name": {
+              "family": "Mensah",
+              "given": [
+                "Kofi"
+              ]
+            },
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "+233 24 111 2222"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p3",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2020-1234"
+          }
+        ],
+        "name": [
+          {
+            "family": "Diallo",
+            "given": [
+              "Yuki"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2000-07-19",
+        "active": false,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+254 722 345 678"
+          },
+          {
+            "system": "email",
+            "value": "aisha.osei@example.com"
+          }
+        ],
+        "contact": [
+          {
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                    "code": "C",
+                    "display": "Emergency Contact"
+                  }
+                ]
+              }
+            ],
+            "name": {
+              "family": "Osei",
+              "given": [
+                "Grace"
+              ]
+            },
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "+254 700 333 444"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p4",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2022-0055"
+          }
+        ],
+        "name": [
+          {
+            "family": "Diallo",
+            "given": [
+              "Lamine"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2015-11-08",
+        "active": true,
+        "telecom": [
+          {
+            "system": "email",
+            "value": "chidi.diallo@example.com"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p5",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2011-0321"
+          }
+        ],
+        "name": [
+          {
+            "family": "Mensah",
+            "given": [
+              "Ama"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1988-04-23",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+233 20 987 6543"
+          },
+          {
+            "system": "email",
+            "value": "ama.mensah@example.com"
+          }
+        ],
+        "contact": [
+          {
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                    "code": "C",
+                    "display": "Emergency Contact"
+                  }
+                ]
+              }
+            ],
+            "name": {
+              "family": "Mensah",
+              "given": [
+                "Emmanuel"
+              ]
+            },
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "+233 20 555 6666"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p6",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1978-0610"
+          }
+        ],
+        "name": [
+          {
+            "family": "Okonkwo",
+            "given": [
+              "Emmanuel"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1978-05-14",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+234 802 123 4567"
+          },
+          {
+            "system": "email",
+            "value": "adaeze.okonkwo@example.com"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp3"
+            }
+          }
+        ],
+        "contact": [
+          {
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                    "code": "N",
+                    "display": "Next-of-kin"
+                  }
+                ]
+              }
+            ],
+            "name": {
+              "family": "Okonkwo",
+              "given": [
+                "Ngozi"
+              ]
+            },
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "+234 802 777 888"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p7",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2005-0785"
+          }
+        ],
+        "name": [
+          {
+            "family": "Okonkwo",
+            "given": [
+              "Chioma"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2005-03-22",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+234 803 234 5678"
+          },
+          {
+            "system": "email",
+            "value": "emeka.okonkwo@example.com"
+          }
+        ],
+        "contact": [
+          {
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                    "code": "C",
+                    "display": "Emergency Contact"
+                  }
+                ]
+              }
+            ],
+            "name": {
+              "family": "Okonkwo",
+              "given": [
+                "Emeka"
+              ]
+            },
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "+234 803 999 000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p8",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2008-1122"
+          }
+        ],
+        "name": [
+          {
+            "family": "Okonkwo",
+            "given": [
+              "Olumide"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2008-09-07",
+        "active": true,
+        "telecom": [
+          {
+            "system": "email",
+            "value": "chiamaka.okonkwo@example.com"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p9",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1975-0403"
+          }
+        ],
+        "name": [
+          {
+            "family": "Nkosi",
+            "given": [
+              "Thabo"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1975-07-30",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+27 82 345 6789"
+          },
+          {
+            "system": "email",
+            "value": "sipho.nkosi@example.com"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp4"
+            }
+          }
+        ],
+        "contact": [
+          {
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                    "code": "C",
+                    "display": "Emergency Contact"
+                  }
+                ]
+              }
+            ],
+            "name": {
+              "family": "Nkosi",
+              "given": [
+                "Zanele"
+              ]
+            },
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "+27 82 111 2222"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p10",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1978-1204"
+          }
+        ],
+        "name": [
+          {
+            "family": "Nkosi",
+            "given": [
+              "Nomvula"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1978-12-15",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+27 83 456 7890"
+          },
+          {
+            "system": "email",
+            "value": "nomvula.nkosi@example.com"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p11",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1965-0234"
+          }
+        ],
+        "name": [
+          {
+            "family": "Traor\u00e9",
+            "given": [
+              "Ibrahim"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1965-03-10",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+223 76 123 456"
+          },
+          {
+            "system": "email",
+            "value": "mamadou.traore@example.com"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp5"
+            }
+          }
+        ],
+        "contact": [
+          {
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                    "code": "N",
+                    "display": "Next-of-kin"
+                  }
+                ]
+              }
+            ],
+            "name": {
+              "family": "Traor\u00e9",
+              "given": [
+                "Ibrahim"
+              ]
+            },
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "+223 76 333 444"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p12",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1968-0987"
+          }
+        ],
+        "name": [
+          {
+            "family": "Traor\u00e9",
+            "given": [
+              "Fatoumata"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1968-08-25",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+223 77 234 567"
+          },
+          {
+            "system": "email",
+            "value": "mariam.traore@example.com"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p13",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2000-1456"
+          }
+        ],
+        "name": [
+          {
+            "family": "Traor\u00e9",
+            "given": [
+              "Moussa"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2000-11-18",
+        "active": true,
+        "telecom": [
+          {
+            "system": "email",
+            "value": "boubacar.traore@example.com"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p14",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1982-0563"
+          }
+        ],
+        "name": [
+          {
+            "family": "Kamau",
+            "given": [
+              "James"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1982-06-12",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+254 722 123 456"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp6"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p15",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1985-0234"
+          }
+        ],
+        "name": [
+          {
+            "family": "Kamau",
+            "given": [
+              "Grace"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1985-02-28",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p16",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1990-0891"
+          }
+        ],
+        "name": [
+          {
+            "family": "Mwangi",
+            "given": [
+              "Peter"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1990-09-19",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+254 710 234 567"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp7"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p17",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1992-0345"
+          }
+        ],
+        "name": [
+          {
+            "family": "Mwangi",
+            "given": [
+              "Mary"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1992-04-03",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p18",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2018-0678"
+          }
+        ],
+        "name": [
+          {
+            "family": "Mwangi",
+            "given": [
+              "Samuel"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2018-12-01",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p19",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1955-0123"
+          }
+        ],
+        "name": [
+          {
+            "family": "Achebe",
+            "given": [
+              "Chinwe"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1955-01-17",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+234 805 345 6789"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp8"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p20",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1958-0567"
+          }
+        ],
+        "name": [
+          {
+            "family": "Achebe",
+            "given": [
+              "Emeka"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1958-10-22",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+234 806 456 7890"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p21",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1972-0456"
+          }
+        ],
+        "name": [
+          {
+            "family": "Osei",
+            "given": [
+              "Kwame"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1972-08-11",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+233 24 678 9012"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp9"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p22",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1975-0234"
+          }
+        ],
+        "name": [
+          {
+            "family": "Osei",
+            "given": [
+              "Abena"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1975-05-07",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+233 20 789 0123"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p23",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2002-0891"
+          }
+        ],
+        "name": [
+          {
+            "family": "Osei",
+            "given": [
+              "Yaw"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2002-03-29",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p24",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1988-0734"
+          }
+        ],
+        "name": [
+          {
+            "family": "Banda",
+            "given": [
+              "Moses"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1988-07-16",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+265 99 123 456"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp10"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p25",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1990-0567"
+          }
+        ],
+        "name": [
+          {
+            "family": "Banda",
+            "given": [
+              "Chisomo"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1990-12-04",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p26",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1960-0345"
+          }
+        ],
+        "name": [
+          {
+            "family": "Tour\u00e9",
+            "given": [
+              "Mamadou"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1960-02-28",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+224 622 123 456"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp11"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p27",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1963-0678"
+          }
+        ],
+        "name": [
+          {
+            "family": "Tour\u00e9",
+            "given": [
+              "Aissatou"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1963-09-14",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+224 623 234 567"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p28",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1995-0234"
+          }
+        ],
+        "name": [
+          {
+            "family": "Dlamini",
+            "given": [
+              "Sibusiso"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1995-04-22",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+268 7600 1234"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp12"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p29",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1997-0567"
+          }
+        ],
+        "name": [
+          {
+            "family": "Dlamini",
+            "given": [
+              "Nompilo"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1997-11-09",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p30",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2022-0234"
+          }
+        ],
+        "name": [
+          {
+            "family": "Dlamini",
+            "given": [
+              "Lihle"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2022-03-15",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p31",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1963-0456"
+          }
+        ],
+        "name": [
+          {
+            "family": "Adeyemi",
+            "given": [
+              "Adewale"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1963-06-05",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+234 807 567 8901"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp13"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p32",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1967-0789"
+          }
+        ],
+        "name": [
+          {
+            "family": "Adeyemi",
+            "given": [
+              "Folake"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1967-01-20",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+234 808 678 9012"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p33",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1980-0345"
+          }
+        ],
+        "name": [
+          {
+            "family": "Owusu",
+            "given": [
+              "Nana"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1980-10-13",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+233 20 901 2345"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp14"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p34",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1978-0234"
+          }
+        ],
+        "name": [
+          {
+            "family": "Owusu",
+            "given": [
+              "Kweku"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1978-04-27",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+233 24 012 3456"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p35",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2010-0678"
+          }
+        ],
+        "name": [
+          {
+            "family": "Owusu",
+            "given": [
+              "Ama"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2010-07-08",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p36",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1970-0789"
+          }
+        ],
+        "name": [
+          {
+            "family": "Kabila",
+            "given": [
+              "Jean-Pierre"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1970-12-01",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+243 99 123 456"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp15"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p37",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1973-0345"
+          }
+        ],
+        "name": [
+          {
+            "family": "Kabila",
+            "given": [
+              "Marie"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1973-08-19",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p38",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1985-0456"
+          }
+        ],
+        "name": [
+          {
+            "family": "Ndiaye",
+            "given": [
+              "Abdoulaye"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1985-05-23",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+221 77 345 6789"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp16"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p39",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1988-0234"
+          }
+        ],
+        "name": [
+          {
+            "family": "Ndiaye",
+            "given": [
+              "Mariama"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1988-02-11",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p40",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1975-0567"
+          }
+        ],
+        "name": [
+          {
+            "family": "Mutua",
+            "given": [
+              "Josephat"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1975-11-07",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+254 711 123 456"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp17"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p41",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1978-0567"
+          }
+        ],
+        "name": [
+          {
+            "family": "Mutua",
+            "given": [
+              "Catherine"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1978-06-30",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+254 712 234 567"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p42",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-2005-0901"
+          }
+        ],
+        "name": [
+          {
+            "family": "Mutua",
+            "given": [
+              "Kevin"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2005-09-14",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p43",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1968-0345"
+          }
+        ],
+        "name": [
+          {
+            "family": "Appiah",
+            "given": [
+              "Kofi"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1968-03-25",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+233 24 234 5678"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp18"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p44",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1970-0456"
+          }
+        ],
+        "name": [
+          {
+            "family": "Appiah",
+            "given": [
+              "Akosua"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1970-10-18",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p45",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1992-0678"
+          }
+        ],
+        "name": [
+          {
+            "family": "Oduya",
+            "given": [
+              "Sunday"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1992-01-31",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+234 809 789 0123"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp19"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p46",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1995-0567"
+          }
+        ],
+        "name": [
+          {
+            "family": "Oduya",
+            "given": [
+              "Blessing"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1995-08-16",
+        "active": true
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p47",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            },
+            "value": "MRN-1950-0123"
+          }
+        ],
+        "name": [
+          {
+            "family": "Nakamura",
+            "given": [
+              "Hiroshi"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1950-07-04",
+        "active": true,
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+81 3 1234 5678"
+          }
+        ],
+        "link": [
+          {
+            "type": "seealso",
+            "other": {
+              "reference": "RelatedPerson/rp20"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g1",
+        "type": "person",
+        "actual": true,
+        "name": "Diallo Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p1"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p3"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p4"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g2",
+        "type": "person",
+        "actual": true,
+        "name": "Mensah Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p2"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p5"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g3",
+        "type": "person",
+        "actual": true,
+        "name": "Okonkwo Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p6"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p7"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p8"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g4",
+        "type": "person",
+        "actual": true,
+        "name": "Nkosi Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p9"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p10"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g5",
+        "type": "person",
+        "actual": true,
+        "name": "Traor\u00e9 Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p11"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p12"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p13"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g6",
+        "type": "person",
+        "actual": true,
+        "name": "Kamau Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p14"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p15"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g7",
+        "type": "person",
+        "actual": true,
+        "name": "Mwangi Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p16"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p17"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p18"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g8",
+        "type": "person",
+        "actual": true,
+        "name": "Achebe Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p19"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p20"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g9",
+        "type": "person",
+        "actual": true,
+        "name": "Osei Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p21"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p22"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p23"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g10",
+        "type": "person",
+        "actual": true,
+        "name": "Banda Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p24"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p25"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g11",
+        "type": "person",
+        "actual": true,
+        "name": "Tour\u00e9 Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p26"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p27"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g12",
+        "type": "person",
+        "actual": true,
+        "name": "Dlamini Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p28"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p29"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p30"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g13",
+        "type": "person",
+        "actual": true,
+        "name": "Adeyemi Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p31"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p32"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g14",
+        "type": "person",
+        "actual": true,
+        "name": "Owusu Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p33"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p34"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p35"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g15",
+        "type": "person",
+        "actual": true,
+        "name": "Kabila Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p36"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p37"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g16",
+        "type": "person",
+        "actual": true,
+        "name": "Ndiaye Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p38"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p39"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g17",
+        "type": "person",
+        "actual": true,
+        "name": "Mutua Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p40"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p41"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p42"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g18",
+        "type": "person",
+        "actual": true,
+        "name": "Appiah Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p43"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p44"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g19",
+        "type": "person",
+        "actual": true,
+        "name": "Oduya Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p45"
+            }
+          },
+          {
+            "entity": {
+              "reference": "Patient/p46"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Group",
+        "id": "g20",
+        "type": "person",
+        "actual": true,
+        "name": "Nakamura Household",
+        "member": [
+          {
+            "entity": {
+              "reference": "Patient/p47"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp1",
+        "patient": {
+          "reference": "Patient/p1"
+        },
+        "name": [
+          {
+            "family": "Diallo",
+            "given": [
+              "Amina"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "SPS"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp2",
+        "patient": {
+          "reference": "Patient/p2"
+        },
+        "name": [
+          {
+            "family": "Mensah",
+            "given": [
+              "Kofi"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "GUAR"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp3",
+        "patient": {
+          "reference": "Patient/p6"
+        },
+        "name": [
+          {
+            "family": "Okonkwo",
+            "given": [
+              "Emmanuel"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "FTH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp4",
+        "patient": {
+          "reference": "Patient/p9"
+        },
+        "name": [
+          {
+            "family": "Nkosi",
+            "given": [
+              "Thabo"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "SPS"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp5",
+        "patient": {
+          "reference": "Patient/p11"
+        },
+        "name": [
+          {
+            "family": "Traor\u00e9",
+            "given": [
+              "Ibrahim"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "FTH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp6",
+        "patient": {
+          "reference": "Patient/p14"
+        },
+        "name": [
+          {
+            "family": "Kamau",
+            "given": [
+              "James"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "SPS"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp7",
+        "patient": {
+          "reference": "Patient/p16"
+        },
+        "name": [
+          {
+            "family": "Mwangi",
+            "given": [
+              "Peter"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "FTH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp8",
+        "patient": {
+          "reference": "Patient/p19"
+        },
+        "name": [
+          {
+            "family": "Achebe",
+            "given": [
+              "Chinwe"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "MTH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp9",
+        "patient": {
+          "reference": "Patient/p21"
+        },
+        "name": [
+          {
+            "family": "Osei",
+            "given": [
+              "Kwame"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "SPS"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp10",
+        "patient": {
+          "reference": "Patient/p24"
+        },
+        "name": [
+          {
+            "family": "Banda",
+            "given": [
+              "Moses"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "SPS"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp11",
+        "patient": {
+          "reference": "Patient/p26"
+        },
+        "name": [
+          {
+            "family": "Tour\u00e9",
+            "given": [
+              "Mamadou"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "FTH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp12",
+        "patient": {
+          "reference": "Patient/p28"
+        },
+        "name": [
+          {
+            "family": "Dlamini",
+            "given": [
+              "Sibusiso"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "SPS"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp13",
+        "patient": {
+          "reference": "Patient/p31"
+        },
+        "name": [
+          {
+            "family": "Adeyemi",
+            "given": [
+              "Adewale"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "FTH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp14",
+        "patient": {
+          "reference": "Patient/p33"
+        },
+        "name": [
+          {
+            "family": "Owusu",
+            "given": [
+              "Nana"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "MTH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp15",
+        "patient": {
+          "reference": "Patient/p36"
+        },
+        "name": [
+          {
+            "family": "Kabila",
+            "given": [
+              "Jean-Pierre"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "FTH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp16",
+        "patient": {
+          "reference": "Patient/p38"
+        },
+        "name": [
+          {
+            "family": "Ndiaye",
+            "given": [
+              "Abdoulaye"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "SPS"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp17",
+        "patient": {
+          "reference": "Patient/p40"
+        },
+        "name": [
+          {
+            "family": "Mutua",
+            "given": [
+              "Josephat"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "FTH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp18",
+        "patient": {
+          "reference": "Patient/p43"
+        },
+        "name": [
+          {
+            "family": "Appiah",
+            "given": [
+              "Kofi"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "SPS"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp19",
+        "patient": {
+          "reference": "Patient/p45"
+        },
+        "name": [
+          {
+            "family": "Oduya",
+            "given": [
+              "Sunday"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "SPS"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "rp20",
+        "patient": {
+          "reference": "Patient/p47"
+        },
+        "name": [
+          {
+            "family": "Nakamura",
+            "given": [
+              "Hiroshi"
+            ]
+          }
+        ],
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "GUAR"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p1-a",
+        "patient": {
+          "reference": "Patient/p1"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Penicillin"
+            }
+          ]
+        },
+        "criticality": "high",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "247472004",
+                    "display": "Urticaria"
+                  }
+                ]
+              }
+            ],
+            "severity": "moderate"
+          },
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "39579001",
+                    "display": "Anaphylaxis"
+                  }
+                ]
+              }
+            ],
+            "severity": "severe"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p1-b",
+        "patient": {
+          "reference": "Patient/p1"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Latex"
+            }
+          ]
+        },
+        "criticality": "low",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "271807003",
+                    "display": "Skin rash"
+                  }
+                ]
+              }
+            ],
+            "severity": "mild"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p2-a",
+        "patient": {
+          "reference": "Patient/p2"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Sulfonamides"
+            }
+          ]
+        },
+        "criticality": "high",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "247472004",
+                    "display": "Urticaria"
+                  }
+                ]
+              }
+            ],
+            "severity": "moderate"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p2-b",
+        "patient": {
+          "reference": "Patient/p2"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Ibuprofen"
+            }
+          ]
+        },
+        "criticality": "low",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "422587007",
+                    "display": "Nausea"
+                  }
+                ]
+              }
+            ],
+            "severity": "mild"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p3-a",
+        "patient": {
+          "reference": "Patient/p3"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Tree nut allergy"
+            }
+          ]
+        },
+        "criticality": "high",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "41291007",
+                    "display": "Angioedema"
+                  }
+                ]
+              }
+            ],
+            "severity": "moderate"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p3-b",
+        "patient": {
+          "reference": "Patient/p3"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Codeine"
+            }
+          ]
+        },
+        "criticality": "low",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "inactive"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "271807003",
+                    "display": "Skin rash"
+                  }
+                ]
+              }
+            ],
+            "severity": "mild"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p6-a",
+        "patient": {
+          "reference": "Patient/p6"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Penicillin"
+            }
+          ]
+        },
+        "criticality": "high",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "230145002",
+                    "display": "Difficulty breathing"
+                  }
+                ]
+              }
+            ],
+            "severity": "severe"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p6-b",
+        "patient": {
+          "reference": "Patient/p6"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Dust mites"
+            }
+          ]
+        },
+        "criticality": "low",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "422400008",
+                    "display": "Vomiting"
+                  }
+                ]
+              }
+            ],
+            "severity": "mild"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p9-a",
+        "patient": {
+          "reference": "Patient/p9"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Sulfonamides"
+            }
+          ]
+        },
+        "criticality": "high",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "418290006",
+                    "display": "Pruritus"
+                  }
+                ]
+              }
+            ],
+            "severity": "mild"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p11-a",
+        "patient": {
+          "reference": "Patient/p11"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Aspirin"
+            }
+          ]
+        },
+        "criticality": "high",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "reaction": [
+          {
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "247472004",
+                    "display": "Urticaria"
+                  }
+                ]
+              }
+            ],
+            "severity": "moderate"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p19-a",
+        "patient": {
+          "reference": "Patient/p19"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Penicillin"
+            }
+          ]
+        },
+        "criticality": "high",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p23-a",
+        "patient": {
+          "reference": "Patient/p23"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Aspirin"
+            }
+          ]
+        },
+        "criticality": "unable-to-assess",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p26-a",
+        "patient": {
+          "reference": "Patient/p26"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Codeine"
+            }
+          ]
+        },
+        "criticality": "low",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "inactive"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p31-a",
+        "patient": {
+          "reference": "Patient/p31"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Aspirin"
+            }
+          ]
+        },
+        "criticality": "high",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p33-a",
+        "patient": {
+          "reference": "Patient/p33"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Penicillin"
+            }
+          ]
+        },
+        "criticality": "low",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p41-a",
+        "patient": {
+          "reference": "Patient/p41"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Shellfish"
+            }
+          ]
+        },
+        "criticality": "high",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p43-a",
+        "patient": {
+          "reference": "Patient/p43"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Latex"
+            }
+          ]
+        },
+        "criticality": "high",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "ai-p47-a",
+        "patient": {
+          "reference": "Patient/p47"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Penicillin"
+            }
+          ]
+        },
+        "criticality": "high",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p1-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p1"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Salbutamol 100mcg inhaler"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "100mcg PRN"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p1-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p1"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Prednisolone 5mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "5mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p2-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p2"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Metformin 500mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "500mg BD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p2-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p2"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Lisinopril 10mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "10mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p3-a",
+        "status": "on-hold",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p3"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Cetirizine 10mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "10mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p3-b",
+        "status": "stopped",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p3"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Loratadine 10mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "10mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p6-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p6"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Tenofovir/Lamivudine/Dolutegravir 300/300/50mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "1 tablet OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p6-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p6"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Cotrimoxazole 960mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "960mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p9-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p9"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Metformin 500mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "500mg BD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p9-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p9"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Salbutamol 100mcg inhaler"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "100mcg PRN"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p11-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p11"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Lisinopril 10mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "10mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p11-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p11"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Hydrochlorothiazide 12.5mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "12.5mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p12-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p12"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Ferrous sulfate 200mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "200mg BD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p17-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p17"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Folic acid 5mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "5mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p19-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p19"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Lisinopril 10mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "10mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p20-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p20"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Metformin 500mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "500mg BD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p22-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p22"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Amlodipine 5mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "5mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p23-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p23"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Salbutamol 100mcg inhaler"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "100mcg PRN"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p24-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p24"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Tenofovir/Lamivudine/Dolutegravir 300/300/50mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "1 tablet OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p24-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p24"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Cotrimoxazole 960mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "960mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p26-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p26"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Lisinopril 20mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "20mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p26-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p26"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Furosemide 40mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "40mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p27-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p27"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Metformin 500mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "500mg BD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p27-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p27"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Insulin Glargine"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "10 units OD at bedtime"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p29-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p29"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Artemether-Lumefantrine 80/480mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "4 tablets BD for 3 days"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p31-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p31"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Amlodipine 5mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "5mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p31-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p31"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Metformin 1g"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "1g BD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p32-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p32"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Levothyroxine 50mcg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "50mcg OD fasting"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p33-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p33"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Salbutamol 100mcg inhaler"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "100mcg PRN"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p36-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p36"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Artemether-Lumefantrine 80/480mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "4 tablets BD for 3 days"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p36-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p36"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Rifampicin 600mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "600mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p37-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p37"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Ferrous sulfate 200mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "200mg BD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p39-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p39"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Lisinopril 10mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "10mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p40-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p40"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Tenofovir/Lamivudine/Dolutegravir 300/300/50mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "1 tablet OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p40-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p40"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Cotrimoxazole 960mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "960mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p41-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p41"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Amlodipine 5mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "5mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p43-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p43"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Metformin 1g"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "1g BD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p43-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p43"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Insulin NPH"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "20 units BD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p43-c",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p43"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Lisinopril 10mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "10mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p46-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p46"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Folic acid 5mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "5mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p46-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p46"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Hydroxyurea 500mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "500mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p47-a",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p47"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Metformin 500mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "500mg BD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-p47-b",
+        "status": "active",
+        "intent": "order",
+        "subject": {
+          "reference": "Patient/p47"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "display": "Amlodipine 5mg"
+            }
+          ]
+        },
+        "dosageInstruction": [
+          {
+            "text": "5mg OD"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p1-a",
+        "subject": {
+          "reference": "Patient/p1"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Asthma"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2015-06-01"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p1-b",
+        "subject": {
+          "reference": "Patient/p1"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Allergic rhinitis"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2016-03-20"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p2-a",
+        "subject": {
+          "reference": "Patient/p2"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Type 2 diabetes mellitus"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2018-01-15"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p2-b",
+        "subject": {
+          "reference": "Patient/p2"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Essential hypertension"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2019-07-22"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p3-a",
+        "subject": {
+          "reference": "Patient/p3"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Atopic dermatitis"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2020-02-10"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p3-b",
+        "subject": {
+          "reference": "Patient/p3"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Food allergy"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2019-11-05"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p6-a",
+        "subject": {
+          "reference": "Patient/p6"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "HIV disease"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2010-01-15"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p6-b",
+        "subject": {
+          "reference": "Patient/p6"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Essential hypertension"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2015-03-10"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p9-a",
+        "subject": {
+          "reference": "Patient/p9"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Type 2 diabetes mellitus"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2012-05-20"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p9-b",
+        "subject": {
+          "reference": "Patient/p9"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Asthma"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2003-08-14"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p11-a",
+        "subject": {
+          "reference": "Patient/p11"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Essential hypertension"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2008-11-03"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p12-a",
+        "subject": {
+          "reference": "Patient/p12"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Iron deficiency anaemia"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2020-06-18"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p17-a",
+        "subject": {
+          "reference": "Patient/p17"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Sickle cell disease"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2000-01-01"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p17-b",
+        "subject": {
+          "reference": "Patient/p17"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Malaria"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2024-11-05"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p19-a",
+        "subject": {
+          "reference": "Patient/p19"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Essential hypertension"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2005-07-22"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p20-a",
+        "subject": {
+          "reference": "Patient/p20"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Type 2 diabetes mellitus"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2014-09-11"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p22-a",
+        "subject": {
+          "reference": "Patient/p22"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Essential hypertension"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2018-03-07"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p23-a",
+        "subject": {
+          "reference": "Patient/p23"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Asthma"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2010-06-14"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p24-a",
+        "subject": {
+          "reference": "Patient/p24"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "HIV disease"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2016-04-20"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p26-a",
+        "subject": {
+          "reference": "Patient/p26"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Essential hypertension"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "1995-02-14"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p26-b",
+        "subject": {
+          "reference": "Patient/p26"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Heart failure"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2020-08-30"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p27-a",
+        "subject": {
+          "reference": "Patient/p27"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Type 2 diabetes mellitus"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2005-11-22"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p29-a",
+        "subject": {
+          "reference": "Patient/p29"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Malaria"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2024-10-18"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p31-a",
+        "subject": {
+          "reference": "Patient/p31"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Essential hypertension"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2000-06-05"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p31-b",
+        "subject": {
+          "reference": "Patient/p31"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Type 2 diabetes mellitus"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2008-03-17"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p32-a",
+        "subject": {
+          "reference": "Patient/p32"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Hypothyroidism"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2015-09-08"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p33-a",
+        "subject": {
+          "reference": "Patient/p33"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Asthma"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2005-04-22"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p36-a",
+        "subject": {
+          "reference": "Patient/p36"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Malaria"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2024-12-01"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p36-b",
+        "subject": {
+          "reference": "Patient/p36"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Pulmonary tuberculosis"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2023-06-15"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p37-a",
+        "subject": {
+          "reference": "Patient/p37"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Iron deficiency anaemia"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2022-07-04"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p39-a",
+        "subject": {
+          "reference": "Patient/p39"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Essential hypertension"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2021-04-16"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p40-a",
+        "subject": {
+          "reference": "Patient/p40"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "HIV disease"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2012-07-19"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p41-a",
+        "subject": {
+          "reference": "Patient/p41"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Essential hypertension"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2019-11-25"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p43-a",
+        "subject": {
+          "reference": "Patient/p43"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Type 2 diabetes mellitus"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2003-08-01"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p43-b",
+        "subject": {
+          "reference": "Patient/p43"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Essential hypertension"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2010-02-14"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p46-a",
+        "subject": {
+          "reference": "Patient/p46"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Sickle cell disease"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2000-01-01"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p46-b",
+        "subject": {
+          "reference": "Patient/p46"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Malaria"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2024-09-12"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p47-a",
+        "subject": {
+          "reference": "Patient/p47"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Type 2 diabetes mellitus"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2005-09-20"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-p47-b",
+        "subject": {
+          "reference": "Patient/p47"
+        },
+        "code": {
+          "coding": [
+            {
+              "display": "Essential hypertension"
+            }
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "onsetDateTime": "2010-03-08"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p1-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "BCG vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p1"
+        },
+        "occurrenceDateTime": "1990-03-14"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p1-b",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "COVID-19 mRNA vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p1"
+        },
+        "occurrenceDateTime": "2021-09-15"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p2-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "Hepatitis B vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p2"
+        },
+        "occurrenceDateTime": "1985-11-02"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p2-b",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "Yellow fever vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p2"
+        },
+        "occurrenceDateTime": "2010-04-12"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p3-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "MMR vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p3"
+        },
+        "occurrenceDateTime": "2001-07-19"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p3-b",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "HPV vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p3"
+        },
+        "occurrenceDateTime": "2015-08-30"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p6-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "BCG vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p6"
+        },
+        "occurrenceDateTime": "1978-05-14"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p6-b",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "Hepatitis B vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p6"
+        },
+        "occurrenceDateTime": "2010-01-15"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p16-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "COVID-19 mRNA vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p16"
+        },
+        "occurrenceDateTime": "2021-08-20"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p18-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "Rotavirus vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p18"
+        },
+        "occurrenceDateTime": "2019-02-01"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p18-b",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "Oral polio vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p18"
+        },
+        "occurrenceDateTime": "2019-03-15"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p19-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "BCG vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p19"
+        },
+        "occurrenceDateTime": "1955-01-17"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p24-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "BCG vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p24"
+        },
+        "occurrenceDateTime": "1988-07-16"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p28-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "HPV vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p28"
+        },
+        "occurrenceDateTime": "2013-04-22"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p30-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "BCG vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p30"
+        },
+        "occurrenceDateTime": "2022-03-15"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p30-b",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "Rotavirus vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p30"
+        },
+        "occurrenceDateTime": "2022-04-15"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p33-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "COVID-19 mRNA vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p33"
+        },
+        "occurrenceDateTime": "2021-07-10"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p35-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "MMR vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p35"
+        },
+        "occurrenceDateTime": "2012-07-08"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p36-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "BCG vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p36"
+        },
+        "occurrenceDateTime": "1970-12-01"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p40-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "Yellow fever vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p40"
+        },
+        "occurrenceDateTime": "2005-06-15"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p47-a",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "BCG vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p47"
+        },
+        "occurrenceDateTime": "1950-07-04"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p47-b",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "Hepatitis B vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p47"
+        },
+        "occurrenceDateTime": "2000-09-01"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "imm-p47-c",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "display": "COVID-19 mRNA vaccine"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/p47"
+        },
+        "occurrenceDateTime": "2021-11-15"
+      }
+    }
+  ]
+}

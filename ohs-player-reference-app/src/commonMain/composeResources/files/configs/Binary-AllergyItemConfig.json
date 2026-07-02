@@ -1,0 +1,16 @@
+{
+  "resourceType": "http://ohs.dev/StructureDefinition/ViewConfig",
+  "viewType": "AllergyItem",
+  "property": [
+    {
+      "name": "showCriticality",
+      "type": "boolean",
+      "valueBoolean": true
+    },
+    {
+      "name": "showStatus",
+      "type": "boolean",
+      "valueBoolean": true
+    }
+  ]
+}

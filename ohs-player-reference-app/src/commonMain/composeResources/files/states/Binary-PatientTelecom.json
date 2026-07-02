@@ -1,0 +1,53 @@
+{
+  "resourceType": "https://sql-on-fhir.org/ig/StructureDefinition/ViewDefinition",
+  "url": "http://ohs.dev/ViewDefinition/PatientTelecom",
+  "fhirVersion": [
+    "4.0.1"
+  ],
+  "select": [
+    {
+      "column": [
+        {
+          "name": "patientId",
+          "path": "id",
+          "type": "http://hl7.org/fhir/StructureDefinition/string"
+        }
+      ]
+    },
+    {
+      "unionAll": [
+        {
+          "column": [
+            {
+              "name": "telecomSystem",
+              "path": "telecom.where(system = 'phone').system.first()",
+              "type": "http://hl7.org/fhir/StructureDefinition/string"
+            },
+            {
+              "name": "telecomValue",
+              "path": "telecom.where(system = 'phone').value.first()",
+              "type": "http://hl7.org/fhir/StructureDefinition/string"
+            }
+          ]
+        },
+        {
+          "column": [
+            {
+              "name": "telecomSystem",
+              "path": "telecom.where(system = 'email').system.first()",
+              "type": "http://hl7.org/fhir/StructureDefinition/string"
+            },
+            {
+              "name": "telecomValue",
+              "path": "telecom.where(system = 'email').value.first()",
+              "type": "http://hl7.org/fhir/StructureDefinition/string"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "name": "PatientTelecom",
+  "status": "active",
+  "resource": "Patient"
+}
