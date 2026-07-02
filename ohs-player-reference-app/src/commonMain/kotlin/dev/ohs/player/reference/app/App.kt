@@ -17,13 +17,19 @@ package dev.ohs.player.reference.app
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.savedstate.read
+import dev.ohs.player.auth.LoginScreen
+import dev.ohs.player.auth.LoginScreenConfig
 import dev.ohs.player.library.registry.LocalViewRegistry
 import dev.ohs.player.reference.app.feature.group.list.GroupListScreen
 import dev.ohs.player.reference.app.feature.group.profile.GroupProfileScreen
@@ -34,45 +40,67 @@ private const val GROUP_PROFILE_ROUTE = "groupProfile"
 private const val PATIENT_PROFILE_ROUTE = "patientProfile"
 private const val GROUP_ID_ARG = "groupId"
 private const val PATIENT_ID_ARG = "patientId"
+private val LOGIN_SCREEN_CONFIG =
+    LoginScreenConfig(
+        loginUrl = "https://auth.nphiis.health.go.ke/provider/login",
+        showLogo = true,
+        showFooter = true,
+        showForgotPassword = true,
+    )
 
 @Composable
 fun App() {
-  val registry = remember { buildAppViewRegistry() }
+    val registry = remember { buildAppViewRegistry() }
 
-  CompositionLocalProvider(LocalViewRegistry provides registry) {
-    OhsPlayerTheme {
-      val navController = rememberNavController()
-      NavHost(navController = navController, startDestination = GROUP_LIST_ROUTE) {
+    CompositionLocalProvider(LocalViewRegistry provides registry) {
+        OhsPlayerTheme {
+            var isLoggedIn by rememberSaveable { mutableStateOf(false) }
+
+            if (isLoggedIn) {
+                ReferenceAppNavigation()
+            } else {
+                LoginScreen(
+                    config = LOGIN_SCREEN_CONFIG,
+                    onLoginSuccess = { isLoggedIn = true },
+                    onForgotPasswordClick = {},
+                    onTermsAndConditionsClick = {},
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReferenceAppNavigation() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = GROUP_LIST_ROUTE) {
 
         // Screen 1: Household list
         composable(GROUP_LIST_ROUTE) {
-          GroupListScreen(
-            onGroupClick = { id -> navController.navigate("$GROUP_PROFILE_ROUTE/$id") }
-          )
+            GroupListScreen(onGroupClick = { id -> navController.navigate("$GROUP_PROFILE_ROUTE/$id") })
         }
 
         // Screen 2: Household profile (head + members)
         composable(
-          route = "$GROUP_PROFILE_ROUTE/{$GROUP_ID_ARG}",
-          arguments = listOf(navArgument(GROUP_ID_ARG) { type = NavType.StringType }),
+            route = "$GROUP_PROFILE_ROUTE/{$GROUP_ID_ARG}",
+            arguments = listOf(navArgument(GROUP_ID_ARG) { type = NavType.StringType }),
         ) { back ->
-          val groupId = back.arguments?.read { getString(GROUP_ID_ARG) }.orEmpty()
-          GroupProfileScreen(
-            groupId = groupId,
-            onBack = { navController.popBackStack() },
-            onMemberClick = { id -> navController.navigate("$PATIENT_PROFILE_ROUTE/$id") },
-          )
+            val groupId = back.arguments?.read { getString(GROUP_ID_ARG) }.orEmpty()
+            GroupProfileScreen(
+                groupId = groupId,
+                onBack = { navController.popBackStack() },
+                onMemberClick = { id -> navController.navigate("$PATIENT_PROFILE_ROUTE/$id") },
+            )
         }
 
         // Screen 3: Patient IPS summary
         composable(
-          route = "$PATIENT_PROFILE_ROUTE/{$PATIENT_ID_ARG}",
-          arguments = listOf(navArgument(PATIENT_ID_ARG) { type = NavType.StringType }),
+            route = "$PATIENT_PROFILE_ROUTE/{$PATIENT_ID_ARG}",
+            arguments = listOf(navArgument(PATIENT_ID_ARG) { type = NavType.StringType }),
         ) { back ->
-          val patientId = back.arguments?.read { getString(PATIENT_ID_ARG) }.orEmpty()
-          PatientProfileScreen(patientId = patientId, onBack = { navController.popBackStack() })
+            val patientId = back.arguments?.read { getString(PATIENT_ID_ARG) }.orEmpty()
+            PatientProfileScreen(patientId = patientId, onBack = { navController.popBackStack() })
         }
-      }
     }
-  }
 }

@@ -1,7 +1,0 @@
-{
-  "resourceType": "http://ohs.dev/StructureDefinition/ViewJoinMap",
-  "name": "patientTelecom",
-  "from": "root",
-  "resource": "Patient",
-  "view": "PatientTelecom"
-}

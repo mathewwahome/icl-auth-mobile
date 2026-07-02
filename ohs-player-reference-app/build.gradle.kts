@@ -58,6 +58,7 @@ kotlin {
       implementation(libs.androidx.activity.compose)
     }
     commonMain.dependencies {
+      implementation(project(":icl-auth"))
       implementation(project(":ohs-player-library"))
       implementation(libs.compose.runtime)
       implementation(libs.compose.foundation)
