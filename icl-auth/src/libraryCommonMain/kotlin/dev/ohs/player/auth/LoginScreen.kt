@@ -86,8 +86,11 @@ fun LoginScreen(
   var errorMessage by rememberSaveable { mutableStateOf<String?>(null) }
   var isSubmitting by rememberSaveable { mutableStateOf(false) }
   val coroutineScope = rememberCoroutineScope()
+  val resolvedConfig = resolveLoginConfig(screenConfig = config)
   val httpClient =
-    remember(config.requestTimeoutMillis) { buildLoginHttpClient(config.requestTimeoutMillis) }
+    remember(resolvedConfig.requestTimeoutMillis) {
+      buildLoginHttpClient(resolvedConfig.requestTimeoutMillis)
+    }
   val loginService = remember(httpClient) { LoginService(httpClient) }
 
   DisposableEffect(httpClient) { onDispose { httpClient.close() } }
@@ -113,7 +116,7 @@ fun LoginScreen(
       }
 
       val validationFailure =
-        validateLoginRequest(config = config, username = username, password = password)
+        validateLoginRequest(config = resolvedConfig, username = username, password = password)
       if (validationFailure != null) {
         errorMessage = validationFailure.message
         onLoginFailure(validationFailure)
@@ -127,7 +130,7 @@ fun LoginScreen(
         try {
           when (
             val result =
-              loginService.login(config = config, username = username, password = password)
+              loginService.login(config = resolvedConfig, username = username, password = password)
           ) {
             is LoginAttemptResult.Success -> {
               errorMessage = null

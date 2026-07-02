@@ -34,6 +34,17 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
+internal data class ResolvedLoginConfig(
+  val loginUrl: String?,
+  val requestHeaders: Map<String, String>,
+  val usernameFieldName: String,
+  val passwordFieldName: String,
+  val requestTimeoutMillis: Long,
+  val responseMessageKeys: List<String>,
+  val messages: LoginMessages,
+  val responseMessageResolver: ((statusCode: Int, responseBody: String) -> String?)?,
+)
+
 internal sealed interface LoginAttemptResult {
   data class Success(val value: LoginSuccess) : LoginAttemptResult
 
@@ -43,7 +54,7 @@ internal sealed interface LoginAttemptResult {
 internal class LoginService(private val httpClient: HttpClient) {
 
   suspend fun login(
-    config: LoginScreenConfig,
+    config: ResolvedLoginConfig,
     username: String,
     password: String,
   ): LoginAttemptResult {
@@ -52,10 +63,13 @@ internal class LoginService(private val httpClient: HttpClient) {
     if (validationFailure != null) {
       return LoginAttemptResult.Failure(validationFailure)
     }
+    val loginUrl =
+      config.loginUrl
+        ?: return LoginAttemptResult.Failure(LoginFailure(config.messages.missingLoginUrl))
 
     return try {
       val response =
-        httpClient.post(config.loginUrl) {
+        httpClient.post(loginUrl) {
           header(HttpHeaders.ContentType, ContentType.Application.Json.toString())
           accept(ContentType.Application.Json)
           config.requestHeaders.forEach { (name, value) -> header(name, value) }
@@ -105,21 +119,22 @@ internal fun buildLoginHttpClient(requestTimeoutMillis: Long): HttpClient =
   }
 
 internal fun validateLoginRequest(
-  config: LoginScreenConfig,
+  config: ResolvedLoginConfig,
   username: String,
   password: String,
 ): LoginFailure? =
   when {
-    config.loginUrl.isBlank() -> LoginFailure(message = config.messages.missingLoginUrl)
+    config.loginUrl.isNullOrBlank() -> LoginFailure(message = config.messages.missingLoginUrl)
     username.isBlank() && password.isBlank() ->
       LoginFailure(message = config.messages.emptyCredentials)
+
     username.isBlank() -> LoginFailure(message = config.messages.emptyUsername)
     password.isBlank() -> LoginFailure(message = config.messages.emptyPassword)
     else -> null
   }
 
 internal fun buildLoginRequestBody(
-  config: LoginScreenConfig,
+  config: ResolvedLoginConfig,
   username: String,
   password: String,
 ): String {
@@ -132,7 +147,7 @@ internal fun buildLoginRequestBody(
 }
 
 internal fun resolveFailureMessage(
-  config: LoginScreenConfig,
+  config: ResolvedLoginConfig,
   statusCode: Int,
   responseBody: String,
 ): String {
@@ -168,9 +183,45 @@ internal fun extractResponseMessage(responseBody: String, keys: List<String>): S
   return runCatching { Json.parseToJsonElement(trimmedBody).jsonObject }
     .getOrNull()
     ?.let { json ->
-      keys
-        .asSequence()
-        .mapNotNull { key -> json[key]?.jsonPrimitive?.contentOrNull?.takeIf { it.isNotBlank() } }
-        .firstOrNull()
+      keys.firstNotNullOfOrNull { key ->
+        json[key]?.jsonPrimitive?.contentOrNull?.takeIf { it.isNotBlank() }
+      }
     }
+}
+
+internal fun resolveLoginConfig(
+  screenConfig: LoginScreenConfig,
+  authConfig: IclAuthConfig? = IclAuth.currentConfiguration(),
+): ResolvedLoginConfig =
+  ResolvedLoginConfig(
+    loginUrl =
+      resolveAuthUrl(baseAuthUrl = authConfig?.baseAuthUrl, endpoint = screenConfig.endpoint),
+    requestHeaders = authConfig?.defaultRequestHeaders.orEmpty() + screenConfig.requestHeaders,
+    usernameFieldName = screenConfig.usernameFieldName,
+    passwordFieldName = screenConfig.passwordFieldName,
+    requestTimeoutMillis =
+      screenConfig.requestTimeoutMillis ?: authConfig?.requestTimeoutMillis ?: 15_000,
+    responseMessageKeys =
+      screenConfig.responseMessageKeys
+        ?: authConfig?.responseMessageKeys
+        ?: listOf("message", "error", "detail"),
+    messages = screenConfig.messages ?: authConfig?.messages ?: LoginMessages(),
+    responseMessageResolver = screenConfig.responseMessageResolver,
+  )
+
+internal fun resolveAuthUrl(baseAuthUrl: String?, endpoint: String): String? {
+  val normalizedEndpoint = endpoint.trim()
+  if (normalizedEndpoint.isBlank()) {
+    return null
+  }
+
+  if (
+    normalizedEndpoint.startsWith(prefix = "https://", ignoreCase = true) ||
+      normalizedEndpoint.startsWith(prefix = "http://", ignoreCase = true)
+  ) {
+    return normalizedEndpoint
+  }
+
+  val normalizedBase = baseAuthUrl?.trim()?.takeIf(String::isNotBlank) ?: return null
+  return normalizedBase.removeSuffix("/") + "/" + normalizedEndpoint.removePrefix("/")
 }

@@ -15,8 +15,16 @@
  */
 package dev.ohs.player.auth
 
+data class IclAuthConfig(
+  val baseAuthUrl: String,
+  val defaultRequestHeaders: Map<String, String> = emptyMap(),
+  val requestTimeoutMillis: Long = 15_000,
+  val responseMessageKeys: List<String> = listOf("message", "error", "detail"),
+  val messages: LoginMessages = LoginMessages(),
+)
+
 data class LoginMessages(
-  val missingLoginUrl: String = "Configure a login URL to enable sign in.",
+  val missingLoginUrl: String = "Configure the auth base URL and endpoint to enable sign in.",
   val emptyCredentials: String = "Enter your username and password to continue.",
   val emptyUsername: String = "Enter your username to continue.",
   val emptyPassword: String = "Enter your password to continue.",
@@ -27,16 +35,16 @@ data class LoginMessages(
 )
 
 data class LoginScreenConfig(
-  val loginUrl: String,
+  val endpoint: String,
   val showLogo: Boolean = true,
   val showFooter: Boolean = true,
   val showForgotPassword: Boolean = true,
   val requestHeaders: Map<String, String> = emptyMap(),
   val usernameFieldName: String = "idNumber",
   val passwordFieldName: String = "password",
-  val requestTimeoutMillis: Long = 15_000,
-  val responseMessageKeys: List<String> = listOf("message", "error", "detail"),
-  val messages: LoginMessages = LoginMessages(),
+  val requestTimeoutMillis: Long? = null,
+  val responseMessageKeys: List<String>? = null,
+  val messages: LoginMessages? = null,
   val responseMessageResolver: ((statusCode: Int, responseBody: String) -> String?)? = null,
 )
 

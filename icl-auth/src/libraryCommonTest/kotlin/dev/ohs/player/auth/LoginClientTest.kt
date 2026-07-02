@@ -30,8 +30,9 @@ import kotlinx.coroutines.test.runTest
 class LoginClientTest {
 
   @Test
-  fun validateLoginRequest_returnsMissingUrlMessageWhenLoginUrlIsBlank() {
-    val config = LoginScreenConfig(loginUrl = "")
+  fun validateLoginRequest_returnsMissingUrlMessageWhenAuthIsNotInitialized() {
+    IclAuth.clear()
+    val config = resolveLoginConfig(screenConfig = LoginScreenConfig(endpoint = "/login"))
 
     val failure = validateLoginRequest(config = config, username = "nurse", password = "secret")
 
@@ -39,12 +40,25 @@ class LoginClientTest {
   }
 
   @Test
+  fun resolveLoginConfig_combinesBaseUrlAndEndpoint() {
+    IclAuth.initialize(IclAuthConfig(baseAuthUrl = "https://auth.example.com"))
+
+    val config = resolveLoginConfig(screenConfig = LoginScreenConfig(endpoint = "/provider/login"))
+
+    assertEquals("https://auth.example.com/provider/login", config.loginUrl)
+  }
+
+  @Test
   fun buildLoginRequestBody_usesConfiguredFieldNames() {
     val config =
-      LoginScreenConfig(
-        loginUrl = "https://auth.example.com/login",
-        usernameFieldName = "email",
-        passwordFieldName = "pin",
+      resolveLoginConfig(
+        screenConfig =
+          LoginScreenConfig(
+            endpoint = "/login",
+            usernameFieldName = "email",
+            passwordFieldName = "pin",
+          ),
+        authConfig = IclAuthConfig(baseAuthUrl = "https://auth.example.com"),
       )
 
     val requestBody = buildLoginRequestBody(config = config, username = "demo", password = "1234")
@@ -54,6 +68,11 @@ class LoginClientTest {
 
   @Test
   fun login_returnsSuccessForSuccessfulResponses() = runTest {
+    val config =
+      resolveLoginConfig(
+        screenConfig = LoginScreenConfig(endpoint = "/login"),
+        authConfig = IclAuthConfig(baseAuthUrl = "https://auth.example.com"),
+      )
     val client =
       HttpClient(
         MockEngine {
@@ -69,12 +88,7 @@ class LoginClientTest {
     val service = LoginService(client)
 
     try {
-      val result =
-        service.login(
-          config = LoginScreenConfig(loginUrl = "https://auth.example.com/login"),
-          username = "nurse",
-          password = "secret",
-        )
+      val result = service.login(config = config, username = "nurse", password = "secret")
 
       val success = assertIs<LoginAttemptResult.Success>(result)
       assertEquals(200, success.value.statusCode)
@@ -86,6 +100,11 @@ class LoginClientTest {
 
   @Test
   fun login_returnsServerMessageWhenProvided() = runTest {
+    val config =
+      resolveLoginConfig(
+        screenConfig = LoginScreenConfig(endpoint = "/login"),
+        authConfig = IclAuthConfig(baseAuthUrl = "https://auth.example.com"),
+      )
     val client =
       HttpClient(
         MockEngine {
@@ -101,12 +120,7 @@ class LoginClientTest {
     val service = LoginService(client)
 
     try {
-      val result =
-        service.login(
-          config = LoginScreenConfig(loginUrl = "https://auth.example.com/login"),
-          username = "nurse",
-          password = "wrong",
-        )
+      val result = service.login(config = config, username = "nurse", password = "wrong")
 
       val failure = assertIs<LoginAttemptResult.Failure>(result)
       assertEquals("Credentials rejected by server", failure.value.message)
