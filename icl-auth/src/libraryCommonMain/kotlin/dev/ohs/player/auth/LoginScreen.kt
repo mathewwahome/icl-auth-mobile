@@ -78,8 +78,9 @@ fun LoginScreen(
   onLoginSuccess: (LoginSuccess) -> Unit,
   modifier: Modifier = Modifier,
   onLoginFailure: (LoginFailure) -> Unit = {},
-  onForgotPasswordClick: () -> Unit = {},
+  onForgotPasswordClick: (String) -> Unit = {},
   onTermsAndConditionsClick: () -> Unit = {},
+  onPrivacyPolicyClick: (() -> Unit)? = null,
 ) {
   var username by rememberSaveable { mutableStateOf("") }
   var password by rememberSaveable { mutableStateOf("") }
@@ -146,8 +147,17 @@ fun LoginScreen(
         }
       }
     },
-    onForgotPasswordClick = onForgotPasswordClick,
+    onForgotPasswordClick = {
+      val trimmedUsername = username.trim()
+      if (trimmedUsername.isBlank()) {
+        errorMessage = resolvedConfig.messages.emptyUsername
+        return@LoginScreenContent
+      }
+
+      onForgotPasswordClick(trimmedUsername)
+    },
     onTermsAndConditionsClick = onTermsAndConditionsClick,
+    onPrivacyPolicyClick = onPrivacyPolicyClick,
   )
 }
 
@@ -160,6 +170,7 @@ private fun LoginScreenContent(
   onLoginClick: () -> Unit,
   onForgotPasswordClick: () -> Unit,
   onTermsAndConditionsClick: () -> Unit,
+  onPrivacyPolicyClick: (() -> Unit)?,
   modifier: Modifier = Modifier,
   errorMessage: String? = null,
   isSubmitting: Boolean = false,
@@ -175,6 +186,7 @@ private fun LoginScreenContent(
         LoginFooter(
           onTermsAndConditionsClick = onTermsAndConditionsClick,
           modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
+          onPrivacyPolicyClick = onPrivacyPolicyClick,
         )
       }
     },
@@ -293,7 +305,18 @@ private fun LoginScreenContent(
 }
 
 @Composable
-internal fun LoginFooter(onTermsAndConditionsClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun LoginFooter(
+  onTermsAndConditionsClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  onPrivacyPolicyClick: (() -> Unit)? = null,
+) {
+  val footerText =
+    if (onPrivacyPolicyClick != null) {
+      "By continuing, you agree to the platform Terms and Conditions and acknowledge the Privacy Policy."
+    } else {
+      "By continuing, you agree to the platform Terms and Conditions."
+    }
+
   Surface(
     modifier = modifier,
     color = MaterialTheme.colorScheme.surface.copy(alpha = 0.96f),
@@ -304,12 +327,15 @@ internal fun LoginFooter(onTermsAndConditionsClick: () -> Unit, modifier: Modifi
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       Text(
-        text = "By continuing, you agree to the platform Terms and Conditions.",
+        text = footerText,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         textAlign = TextAlign.Center,
       )
       TextButton(onClick = onTermsAndConditionsClick) { Text("Terms and Conditions") }
+      if (onPrivacyPolicyClick != null) {
+        TextButton(onClick = onPrivacyPolicyClick) { Text("Privacy Policy") }
+      }
     }
   }
 }

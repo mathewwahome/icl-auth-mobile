@@ -68,13 +68,15 @@ internal const val SET_NEW_PASSWORD_BUTTON_TAG = "set_new_password_button"
 @Composable
 fun SetNewPasswordScreen(
   config: SetNewPasswordScreenConfig,
-  idNumber: String,
+  initialIdNumber: String = "",
   onPasswordResetSuccess: (SetNewPasswordSuccess) -> Unit,
   modifier: Modifier = Modifier,
   onPasswordResetFailure: (SetNewPasswordFailure) -> Unit = {},
   onBackToLoginClick: (() -> Unit)? = null,
   onTermsAndConditionsClick: () -> Unit = {},
+  onPrivacyPolicyClick: (() -> Unit)? = null,
 ) {
+  var idNumber by rememberSaveable(initialIdNumber) { mutableStateOf(initialIdNumber) }
   var currentPassword by rememberSaveable { mutableStateOf("") }
   var newPassword by rememberSaveable { mutableStateOf("") }
   var confirmPassword by rememberSaveable { mutableStateOf("") }
@@ -91,7 +93,6 @@ fun SetNewPasswordScreen(
   DisposableEffect(httpClient) { onDispose { httpClient.close() } }
 
   SetNewPasswordScreenContent(
-    idNumber = idNumber,
     currentPassword = currentPassword,
     newPassword = newPassword,
     confirmPassword = confirmPassword,
@@ -100,6 +101,7 @@ fun SetNewPasswordScreen(
     errorMessage = errorMessage,
     isSubmitting = isSubmitting,
     onTermsAndConditionsClick = onTermsAndConditionsClick,
+    onPrivacyPolicyClick = onPrivacyPolicyClick,
     onCurrentPasswordChange = {
       currentPassword = it
       errorMessage = null
@@ -172,7 +174,6 @@ fun SetNewPasswordScreen(
 
 @Composable
 private fun SetNewPasswordScreenContent(
-  idNumber: String,
   currentPassword: String,
   newPassword: String,
   confirmPassword: String,
@@ -186,6 +187,7 @@ private fun SetNewPasswordScreenContent(
   isSubmitting: Boolean = false,
   onBackToLoginClick: (() -> Unit)? = null,
   onTermsAndConditionsClick: () -> Unit = {},
+  onPrivacyPolicyClick: (() -> Unit)? = null,
 ) {
   val canSubmit =
     currentPassword.isNotBlank() &&
@@ -201,6 +203,7 @@ private fun SetNewPasswordScreenContent(
         LoginFooter(
           onTermsAndConditionsClick = onTermsAndConditionsClick,
           modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
+          onPrivacyPolicyClick = onPrivacyPolicyClick,
         )
       }
     },
@@ -236,28 +239,19 @@ private fun SetNewPasswordScreenContent(
             AuthLogo()
           }
           Text(
-            text = "Set a New Password",
+            text = "Reset Your Password",
             modifier = Modifier.padding(top = if (config.showLogo) 20.dp else 0.dp),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
           )
           Text(
-            text = "This is your first login. Update your password to continue.",
+            text = "Enter your current or temporary password, then choose a new password.",
             modifier = Modifier.padding(top = 8.dp),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
           )
-          if (idNumber.isNotBlank()) {
-            Text(
-              text = "ID Number: $idNumber",
-              modifier = Modifier.padding(top = 8.dp),
-              style = MaterialTheme.typography.bodyMedium,
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
-              textAlign = TextAlign.Center,
-            )
-          }
         }
 
         Card(
@@ -274,8 +268,8 @@ private fun SetNewPasswordScreenContent(
               value = currentPassword,
               onValueChange = onCurrentPasswordChange,
               modifier = Modifier.fillMaxWidth().testTag(SET_NEW_PASSWORD_CURRENT_TAG),
-              label = { Text("Current password") },
-              placeholder = { Text("Enter your current password") },
+              label = { Text("Current or temporary password") },
+              placeholder = { Text("Enter your current or temporary password") },
               singleLine = true,
               enabled = !isSubmitting,
               visualTransformation = PasswordVisualTransformation(),

@@ -30,10 +30,6 @@ import androidx.navigation.navArgument
 import androidx.savedstate.read
 import dev.ohs.player.auth.IclAuth
 import dev.ohs.player.auth.IclAuthConfig
-import dev.ohs.player.auth.LoginScreen
-import dev.ohs.player.auth.LoginScreenConfig
-import dev.ohs.player.auth.SetNewPasswordScreen
-import dev.ohs.player.auth.SetNewPasswordScreenConfig
 import dev.ohs.player.library.registry.LocalViewRegistry
 import dev.ohs.player.reference.app.feature.group.list.GroupListScreen
 import dev.ohs.player.reference.app.feature.group.profile.GroupProfileScreen
@@ -46,14 +42,6 @@ private const val GROUP_ID_ARG = "groupId"
 private const val PATIENT_ID_ARG = "patientId"
 private val AUTH_CONFIG =
   IclAuthConfig(baseAuthUrl = "https://dsrkeycloak.intellisoftkenya.com/auth")
-private val LOGIN_SCREEN_CONFIG =
-  LoginScreenConfig(
-    endpoint = "/provider/login",
-    showLogo = true,
-    showFooter = true,
-    showForgotPassword = true,
-  )
-private val SET_NEW_PASSWORD_SCREEN_CONFIG = SetNewPasswordScreenConfig()
 
 @Composable
 fun App() {
@@ -63,38 +51,11 @@ fun App() {
   CompositionLocalProvider(LocalViewRegistry provides registry) {
     OhsPlayerTheme {
       var isLoggedIn by rememberSaveable { mutableStateOf(IclAuth.hasValidAccessToken()) }
-      var firstLoginIdNumber by rememberSaveable { mutableStateOf<String?>(null) }
 
       if (isLoggedIn) {
         ReferenceAppNavigation()
-      } else if (firstLoginIdNumber != null) {
-        SetNewPasswordScreen(
-          config = SET_NEW_PASSWORD_SCREEN_CONFIG,
-          idNumber = firstLoginIdNumber.orEmpty(),
-          onPasswordResetSuccess = {
-            firstLoginIdNumber = null
-            isLoggedIn = true
-          },
-          onBackToLoginClick = {
-            firstLoginIdNumber = null
-            IclAuth.clearSession()
-          },
-        )
       } else {
-        LoginScreen(
-          config = LOGIN_SCREEN_CONFIG,
-          onLoginSuccess = { success ->
-            if (success.tokenResponse?.firstLogin == true) {
-              firstLoginIdNumber =
-                success.providerProfile?.user?.idNumber?.takeIf(String::isNotBlank)
-                  ?: success.username.orEmpty()
-            } else {
-              isLoggedIn = true
-            }
-          },
-          onForgotPasswordClick = {},
-          onTermsAndConditionsClick = {},
-        )
+        AuthNavigation(onAuthenticated = { isLoggedIn = true })
       }
     }
   }

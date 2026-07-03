@@ -57,6 +57,7 @@ import kotlinx.coroutines.launch
 
 internal const val FORGOT_PASSWORD_EMAIL_TAG = "forgot_password_email"
 internal const val FORGOT_PASSWORD_SUBMIT_BUTTON_TAG = "forgot_password_submit_button"
+internal const val FORGOT_PASSWORD_HAVE_CODE_TAG = "forgot_password_have_code_button"
 
 data class ForgotPasswordScreenConfig(
   val showLogo: Boolean = true,
@@ -69,8 +70,10 @@ fun ForgotPasswordScreen(
   onBackToLoginClick: () -> Unit,
   modifier: Modifier = Modifier,
   config: ForgotPasswordScreenConfig = ForgotPasswordScreenConfig(),
+  initialIdentifier: String = "",
+  onIAlreadyHaveCodeClick: (String) -> Unit = {},
 ) {
-  var identifier by rememberSaveable { mutableStateOf("") }
+  var identifier by rememberSaveable(initialIdentifier) { mutableStateOf(initialIdentifier) }
   var errorMessage by rememberSaveable { mutableStateOf<String?>(null) }
   var isSubmitting by rememberSaveable { mutableStateOf(false) }
   var isSubmitted by rememberSaveable { mutableStateOf(false) }
@@ -202,6 +205,22 @@ fun ForgotPasswordScreen(
               ) {
                 Text(if (isSubmitting) "Sending..." else "Send reset link")
               }
+            }
+
+            TextButton(
+              onClick = {
+                val trimmedIdentifier = identifier.trim()
+                if (trimmedIdentifier.isBlank()) {
+                  errorMessage = config.emptyEmailMessage
+                  return@TextButton
+                }
+
+                onIAlreadyHaveCodeClick(trimmedIdentifier)
+              },
+              modifier = Modifier.testTag(FORGOT_PASSWORD_HAVE_CODE_TAG),
+              enabled = !isSubmitting,
+            ) {
+              Text("I already have the code")
             }
 
             TextButton(onClick = onBackToLoginClick, enabled = !isSubmitting) {

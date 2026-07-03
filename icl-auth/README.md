@@ -174,10 +174,10 @@ private val LOGIN_CONFIG =
 - `responseMessageResolver`
   Optional custom function for mapping response status and body into a message.
 
-## Configure the first-time password screen
+## Configure the password reset screen
 
-Use `SetNewPasswordScreenConfig` for the screen shown when a user logs in with
-`firstLogin = true`.
+Use `SetNewPasswordScreenConfig` for password reset flows, including first-time
+login and forgot-password journeys.
 
 ```kotlin
 import dev.ohs.player.auth.SetNewPasswordScreenConfig
@@ -255,20 +255,26 @@ fun LaunchScreen() {
       onLoginFailure = { failure ->
         println("Login failed: ${failure.message}")
       },
-      onForgotPasswordClick = {
-        // Navigate to your forgot-password flow
+      onForgotPasswordClick = { currentUsername ->
+        // Navigate to your forgot-password flow, optionally using currentUsername
       },
       onTermsAndConditionsClick = {
         // Open terms and conditions
+      },
+      onPrivacyPolicyClick = {
+        // Open the privacy policy
       },
     )
   }
 }
 ```
 
-## Use the first-time password screen
+## Use the password reset screen
 
-Render `SetNewPasswordScreen` when login succeeds with `firstLogin = true`.
+Render `SetNewPasswordScreen` when login succeeds with `firstLogin = true`, or
+open the same screen from your login screen's forgot-password action.
+The screen keeps `initialIdNumber` in the background and only renders the three
+password inputs.
 
 ```kotlin
 import androidx.compose.runtime.Composable
@@ -295,7 +301,7 @@ fun LaunchScreen() {
     firstLoginIdNumber != null ->
       SetNewPasswordScreen(
         config = SET_NEW_PASSWORD_CONFIG,
-        idNumber = firstLoginIdNumber.orEmpty(),
+        initialIdNumber = firstLoginIdNumber.orEmpty(),
         onPasswordResetSuccess = {
           firstLoginIdNumber = null
           isLoggedIn = true
@@ -314,6 +320,9 @@ fun LaunchScreen() {
           } else {
             isLoggedIn = true
           }
+        },
+        onForgotPasswordClick = { currentUsername ->
+          firstLoginIdNumber = currentUsername
         },
       )
   }
@@ -735,7 +744,7 @@ Example:
 ```kotlin
 SetNewPasswordScreen(
   config = SetNewPasswordScreenConfig(),
-  idNumber = "32645167",
+  initialIdNumber = "32645167",
   onPasswordResetSuccess = { success ->
     println(success.statusCode)
     println(success.responseBody)
@@ -776,7 +785,7 @@ Example:
 ```kotlin
 SetNewPasswordScreen(
   config = SetNewPasswordScreenConfig(),
-  idNumber = "32645167",
+  initialIdNumber = "32645167",
   onPasswordResetSuccess = { },
   onPasswordResetFailure = { failure ->
     println(failure.message)
@@ -841,7 +850,7 @@ fun App() {
     firstLoginIdNumber != null ->
       SetNewPasswordScreen(
         config = SET_NEW_PASSWORD_CONFIG,
-        idNumber = firstLoginIdNumber.orEmpty(),
+        initialIdNumber = firstLoginIdNumber.orEmpty(),
         onPasswordResetSuccess = {
           firstLoginIdNumber = null
           isLoggedIn = true
@@ -857,8 +866,11 @@ fun App() {
             isLoggedIn = true
           }
         },
-        onForgotPasswordClick = {},
+        onForgotPasswordClick = { currentUsername ->
+          firstLoginIdNumber = currentUsername
+        },
         onTermsAndConditionsClick = {},
+        onPrivacyPolicyClick = {},
       )
   }
 }
