@@ -22,16 +22,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.savedstate.read
-import dev.ohs.player.auth.ForgotPasswordScreen
-import dev.ohs.player.auth.ForgotPasswordScreenConfig
-import dev.ohs.player.auth.IclAuth
-import dev.ohs.player.auth.LoginScreen
-import dev.ohs.player.auth.LoginScreenConfig
-import dev.ohs.player.auth.ResetPasswordScreen
-import dev.ohs.player.auth.ResetPasswordScreenConfig
-import dev.ohs.player.auth.SetNewPasswordScreen
-import dev.ohs.player.auth.SetNewPasswordScreenConfig
 import dev.ohs.player.reference.app.feature.web.WebContentScreen
+import icl.ohs.libs.auth.ForgotPasswordScreen
+import icl.ohs.libs.auth.ForgotPasswordScreenConfig
+import icl.ohs.libs.auth.IclAuth
+import icl.ohs.libs.auth.LoginScreen
+import icl.ohs.libs.auth.LoginScreenConfig
+import icl.ohs.libs.auth.ResetPasswordScreen
+import icl.ohs.libs.auth.ResetPasswordScreenConfig
+import icl.ohs.libs.auth.SetNewPasswordScreen
+import icl.ohs.libs.auth.SetNewPasswordScreenConfig
 
 private const val AUTH_LOGIN_ROUTE = "auth/login"
 private const val AUTH_FORGOT_PASSWORD_ROUTE = "auth/forgot-password"
@@ -235,9 +235,7 @@ fun AuthNavigation(onAuthenticated: () -> Unit) {
 }
 
 private fun androidx.navigation.NavController.navigateToSetNewPassword(initialIdNumber: String) {
-  navigate(
-    "$AUTH_SET_NEW_PASSWORD_ROUTE?$SET_NEW_PASSWORD_ID_NUMBER_ARG=${initialIdNumber.trim()}"
-  )
+  navigate("$AUTH_SET_NEW_PASSWORD_ROUTE?$SET_NEW_PASSWORD_ID_NUMBER_ARG=${initialIdNumber.trim()}")
 }
 
 private fun androidx.navigation.NavController.navigateToResetPassword(identifier: String) {

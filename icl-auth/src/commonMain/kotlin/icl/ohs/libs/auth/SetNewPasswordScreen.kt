@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.ohs.player.auth
+package icl.ohs.libs.auth
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -59,28 +60,30 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
-internal const val RESET_PASSWORD_OTP_TAG = "reset_password_otp"
-internal const val RESET_PASSWORD_NEW_TAG = "reset_password_new"
-internal const val RESET_PASSWORD_CONFIRM_TAG = "reset_password_confirm"
-internal const val RESET_PASSWORD_BUTTON_TAG = "reset_password_button"
+internal const val SET_NEW_PASSWORD_CURRENT_TAG = "set_new_password_current"
+internal const val SET_NEW_PASSWORD_NEW_TAG = "set_new_password_new"
+internal const val SET_NEW_PASSWORD_CONFIRM_TAG = "set_new_password_confirm"
+internal const val SET_NEW_PASSWORD_BUTTON_TAG = "set_new_password_button"
 
 @Composable
-fun ResetPasswordScreen(
-  config: ResetPasswordScreenConfig,
-  identifier: String,
-  onPasswordResetSuccess: (ResetPasswordSuccess) -> Unit,
+fun SetNewPasswordScreen(
+  config: SetNewPasswordScreenConfig,
+  initialIdNumber: String = "",
+  onPasswordResetSuccess: (SetNewPasswordSuccess) -> Unit,
   modifier: Modifier = Modifier,
-  onPasswordResetFailure: (ResetPasswordFailure) -> Unit = {},
+  onPasswordResetFailure: (SetNewPasswordFailure) -> Unit = {},
   onBackToLoginClick: (() -> Unit)? = null,
   onTermsAndConditionsClick: () -> Unit = {},
+  onPrivacyPolicyClick: (() -> Unit)? = null,
 ) {
-  var otp by rememberSaveable { mutableStateOf("") }
+  var idNumber by rememberSaveable(initialIdNumber) { mutableStateOf(initialIdNumber) }
+  var currentPassword by rememberSaveable { mutableStateOf("") }
   var newPassword by rememberSaveable { mutableStateOf("") }
   var confirmPassword by rememberSaveable { mutableStateOf("") }
   var errorMessage by rememberSaveable { mutableStateOf<String?>(null) }
   var isSubmitting by rememberSaveable { mutableStateOf(false) }
   val coroutineScope = rememberCoroutineScope()
-  val resolvedConfig = resolveResetPasswordConfig(screenConfig = config)
+  val resolvedConfig = resolveSetNewPasswordConfig(screenConfig = config)
   val httpClient =
     remember(resolvedConfig.requestTimeoutMillis) {
       buildLoginHttpClient(resolvedConfig.requestTimeoutMillis)
@@ -89,8 +92,8 @@ fun ResetPasswordScreen(
 
   DisposableEffect(httpClient) { onDispose { httpClient.close() } }
 
-  ResetPasswordScreenContent(
-    otp = otp,
+  SetNewPasswordScreenContent(
+    currentPassword = currentPassword,
     newPassword = newPassword,
     confirmPassword = confirmPassword,
     modifier = modifier,
@@ -98,8 +101,9 @@ fun ResetPasswordScreen(
     errorMessage = errorMessage,
     isSubmitting = isSubmitting,
     onTermsAndConditionsClick = onTermsAndConditionsClick,
-    onOtpChange = {
-      otp = it
+    onPrivacyPolicyClick = onPrivacyPolicyClick,
+    onCurrentPasswordChange = {
+      currentPassword = it
       errorMessage = null
     },
     onNewPasswordChange = {
@@ -112,20 +116,24 @@ fun ResetPasswordScreen(
     },
     onSubmitClick = {
       if (isSubmitting) {
-        return@ResetPasswordScreenContent
+        return@SetNewPasswordScreenContent
       }
 
-      val request = ResetPasswordReq(otp = otp, identifier = identifier, password = newPassword)
       val validationFailure =
-        validateResetPasswordForm(
+        validateSetNewPasswordForm(
           config = resolvedConfig,
-          request = request,
+          request =
+            SetNewPasswordReq(
+              temporaryPassword = currentPassword,
+              idNumber = idNumber,
+              password = newPassword,
+            ),
           confirmPassword = confirmPassword,
         )
       if (validationFailure != null) {
         errorMessage = validationFailure.message
         onPasswordResetFailure(validationFailure)
-        return@ResetPasswordScreenContent
+        return@SetNewPasswordScreenContent
       }
 
       coroutineScope.launch {
@@ -134,14 +142,23 @@ fun ResetPasswordScreen(
 
         try {
           when (
-            val result = loginService.resetPassword(config = resolvedConfig, request = request)
+            val result =
+              loginService.setNewPassword(
+                config = resolvedConfig,
+                request =
+                  SetNewPasswordReq(
+                    temporaryPassword = currentPassword,
+                    idNumber = idNumber,
+                    password = newPassword,
+                  ),
+              )
           ) {
-            is ResetPasswordAttemptResult.Success -> {
+            is SetNewPasswordAttemptResult.Success -> {
               errorMessage = null
               onPasswordResetSuccess(result.value)
             }
 
-            is ResetPasswordAttemptResult.Failure -> {
+            is SetNewPasswordAttemptResult.Failure -> {
               errorMessage = result.value.message
               onPasswordResetFailure(result.value)
             }
@@ -156,29 +173,26 @@ fun ResetPasswordScreen(
 }
 
 @Composable
-private fun ResetPasswordScreenContent(
-  otp: String,
+private fun SetNewPasswordScreenContent(
+  currentPassword: String,
   newPassword: String,
   confirmPassword: String,
-  onOtpChange: (String) -> Unit,
+  onCurrentPasswordChange: (String) -> Unit,
   onNewPasswordChange: (String) -> Unit,
   onConfirmPasswordChange: (String) -> Unit,
   onSubmitClick: () -> Unit,
-  config: ResetPasswordScreenConfig,
+  config: SetNewPasswordScreenConfig,
   modifier: Modifier = Modifier,
   errorMessage: String? = null,
   isSubmitting: Boolean = false,
   onBackToLoginClick: (() -> Unit)? = null,
   onTermsAndConditionsClick: () -> Unit = {},
+  onPrivacyPolicyClick: (() -> Unit)? = null,
 ) {
-  val isPasswordLongEnough = newPassword.length >= config.minPasswordLength
-  val passwordsMatch = confirmPassword.isNotEmpty() && confirmPassword == newPassword
   val canSubmit =
-    otp.isNotBlank() &&
+    currentPassword.isNotBlank() &&
       newPassword.isNotBlank() &&
       confirmPassword.isNotBlank() &&
-      isPasswordLongEnough &&
-      passwordsMatch &&
       !isSubmitting
 
   Scaffold(
@@ -189,6 +203,7 @@ private fun ResetPasswordScreenContent(
         LoginFooter(
           onTermsAndConditionsClick = onTermsAndConditionsClick,
           modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
+          onPrivacyPolicyClick = onPrivacyPolicyClick,
         )
       }
     },
@@ -210,6 +225,15 @@ private fun ResetPasswordScreenContent(
           .imePadding(),
       contentAlignment = Alignment.Center,
     ) {
+      if (errorMessage != null) {
+        AuthMessageBanner(
+          message = errorMessage,
+          type = AuthMessageBannerType.Error,
+          onDismiss = {},
+          modifier =
+            Modifier.align(Alignment.TopCenter).padding(start = 20.dp, top = 12.dp, end = 20.dp),
+        )
+      }
       Column(
         modifier =
           Modifier.widthIn(max = 460.dp)
@@ -224,14 +248,14 @@ private fun ResetPasswordScreenContent(
             AuthLogo()
           }
           Text(
-            text = "Reset Password",
+            text = "Reset Your Password",
             modifier = Modifier.padding(top = if (config.showLogo) 20.dp else 0.dp),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
           )
           Text(
-            text = "Enter the OTP sent to your registered email and choose a new password.",
+            text = "Enter your current or temporary password, then choose a new password.",
             modifier = Modifier.padding(top = 8.dp),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -250,76 +274,50 @@ private fun ResetPasswordScreenContent(
             verticalArrangement = Arrangement.spacedBy(16.dp),
           ) {
             OutlinedTextField(
-              value = otp,
-              onValueChange = onOtpChange,
-              modifier = Modifier.fillMaxWidth().testTag(RESET_PASSWORD_OTP_TAG),
-              label = { Text("OTP") },
-              placeholder = { Text("Enter the code sent to your email") },
+              value = currentPassword,
+              onValueChange = onCurrentPasswordChange,
+              modifier = Modifier.fillMaxWidth().testTag(SET_NEW_PASSWORD_CURRENT_TAG),
+              label = { Text("Current or temporary password") },
+              placeholder = { Text("Enter your current or temporary password") },
               singleLine = true,
               enabled = !isSubmitting,
+              visualTransformation = PasswordVisualTransformation(),
               keyboardOptions =
-                KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
+                KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Next),
             )
 
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-              OutlinedTextField(
-                value = newPassword,
-                onValueChange = onNewPasswordChange,
-                modifier = Modifier.fillMaxWidth().testTag(RESET_PASSWORD_NEW_TAG),
-                label = { Text("New password") },
-                placeholder = { Text("Enter your new password") },
-                singleLine = true,
-                enabled = !isSubmitting,
-                isError = newPassword.isNotEmpty() && !isPasswordLongEnough,
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions =
-                  KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Next),
-              )
-              if (newPassword.isNotEmpty()) {
-                Text(
-                  text =
-                    if (isPasswordLongEnough) {
-                      "Meets minimum length requirement."
-                    } else {
-                      "Must be at least ${config.minPasswordLength} characters."
-                    },
-                  style = MaterialTheme.typography.bodySmall,
-                  color =
-                    if (isPasswordLongEnough) {
-                      MaterialTheme.colorScheme.primary
-                    } else {
-                      MaterialTheme.colorScheme.error
-                    },
-                )
-              }
-            }
+            OutlinedTextField(
+              value = newPassword,
+              onValueChange = onNewPasswordChange,
+              modifier = Modifier.fillMaxWidth().testTag(SET_NEW_PASSWORD_NEW_TAG),
+              label = { Text("New password") },
+              placeholder = { Text("Enter your new password") },
+              singleLine = true,
+              enabled = !isSubmitting,
+              visualTransformation = PasswordVisualTransformation(),
+              keyboardOptions =
+                KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Next),
+            )
 
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-              OutlinedTextField(
-                value = confirmPassword,
-                onValueChange = onConfirmPasswordChange,
-                modifier = Modifier.fillMaxWidth().testTag(RESET_PASSWORD_CONFIRM_TAG),
-                label = { Text("Confirm password") },
-                placeholder = { Text("Confirm your new password") },
-                singleLine = true,
-                enabled = !isSubmitting,
-                isError = confirmPassword.isNotEmpty() && !passwordsMatch,
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions =
-                  KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { if (canSubmit) onSubmitClick() }),
-              )
-              if (confirmPassword.isNotEmpty()) {
-                Text(
-                  text = if (passwordsMatch) "Passwords match." else "Passwords do not match.",
-                  style = MaterialTheme.typography.bodySmall,
-                  color =
-                    if (passwordsMatch) {
-                      MaterialTheme.colorScheme.primary
-                    } else {
-                      MaterialTheme.colorScheme.error
-                    },
-                )
+            OutlinedTextField(
+              value = confirmPassword,
+              onValueChange = onConfirmPasswordChange,
+              modifier = Modifier.fillMaxWidth().testTag(SET_NEW_PASSWORD_CONFIRM_TAG),
+              label = { Text("Confirm password") },
+              placeholder = { Text("Confirm your new password") },
+              singleLine = true,
+              enabled = !isSubmitting,
+              visualTransformation = PasswordVisualTransformation(),
+              keyboardOptions =
+                KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+              keyboardActions = KeyboardActions(onDone = { if (canSubmit) onSubmitClick() }),
+            )
+
+            if (onBackToLoginClick != null) {
+              Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                TextButton(onClick = onBackToLoginClick, enabled = !isSubmitting) {
+                  Text("Back to login")
+                }
               }
             }
 
@@ -333,17 +331,11 @@ private fun ResetPasswordScreenContent(
 
             Button(
               onClick = onSubmitClick,
-              modifier = Modifier.fillMaxWidth().testTag(RESET_PASSWORD_BUTTON_TAG),
+              modifier = Modifier.fillMaxWidth().testTag(SET_NEW_PASSWORD_BUTTON_TAG),
               enabled = canSubmit,
               shape = RoundedCornerShape(18.dp),
             ) {
-              Text(if (isSubmitting) "Resetting..." else "Reset password")
-            }
-
-            if (onBackToLoginClick != null) {
-              TextButton(onClick = onBackToLoginClick, enabled = !isSubmitting) {
-                Text("Back to login")
-              }
+              Text(if (isSubmitting) "Updating..." else "Update password")
             }
           }
         }
@@ -352,15 +344,17 @@ private fun ResetPasswordScreenContent(
   }
 }
 
-private fun validateResetPasswordForm(
-  config: ResolvedResetPasswordConfig,
-  request: ResetPasswordReq,
+private fun validateSetNewPasswordForm(
+  config: ResolvedSetNewPasswordConfig,
+  request: SetNewPasswordReq,
   confirmPassword: String,
-): ResetPasswordFailure? =
+): SetNewPasswordFailure? =
   when {
     confirmPassword.isBlank() ->
-      ResetPasswordFailure(message = config.messages.emptyConfirmPassword)
+      SetNewPasswordFailure(message = config.messages.emptyConfirmPassword)
+
     request.password != confirmPassword ->
-      ResetPasswordFailure(message = config.messages.passwordMismatch)
-    else -> validateResetPasswordRequest(config = config, request = request)
+      SetNewPasswordFailure(message = config.messages.passwordMismatch)
+
+    else -> validateSetNewPasswordRequest(config = config, request = request)
   }

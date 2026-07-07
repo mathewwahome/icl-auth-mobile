@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.ohs.player.auth
+package icl.ohs.libs.auth
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -31,12 +31,19 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons.Default
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -60,11 +67,16 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
@@ -137,6 +149,7 @@ fun LoginScreen(
               errorMessage = null
               onLoginSuccess(result.value)
             }
+
             is LoginAttemptResult.Failure -> {
               errorMessage = result.value.message
               onLoginFailure(result.value)
@@ -177,6 +190,7 @@ private fun LoginScreenContent(
   config: LoginScreenConfig,
 ) {
   val canSubmit = username.isNotBlank() && password.isNotBlank() && !isSubmitting
+  var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
   Scaffold(
     modifier = modifier.fillMaxSize(),
@@ -257,6 +271,13 @@ private fun LoginScreenContent(
               enabled = !isSubmitting,
               keyboardOptions =
                 KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
+              trailingIcon = {
+                if (username.isNotEmpty()) {
+                  IconButton(onClick = { onUsernameChange("") }) {
+                    Icon(imageVector = Default.Clear, contentDescription = "Clear username")
+                  }
+                }
+              },
             )
 
             OutlinedTextField(
@@ -267,10 +288,41 @@ private fun LoginScreenContent(
               placeholder = { Text("Enter your password") },
               singleLine = true,
               enabled = !isSubmitting,
-              visualTransformation = PasswordVisualTransformation(),
+              visualTransformation =
+                if (passwordVisible) {
+                  VisualTransformation.None
+                } else {
+                  PasswordVisualTransformation()
+                },
               keyboardOptions =
                 KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
               keyboardActions = KeyboardActions(onDone = { if (canSubmit) onLoginClick() }),
+              trailingIcon = {
+                Row {
+                  if (password.isNotEmpty()) {
+                    IconButton(onClick = { onPasswordChange("") }) {
+                      Icon(imageVector = Default.Clear, contentDescription = "Clear password")
+                    }
+                  }
+
+                  IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                      imageVector =
+                        if (passwordVisible) {
+                          Default.VisibilityOff
+                        } else {
+                          Default.Visibility
+                        },
+                      contentDescription =
+                        if (passwordVisible) {
+                          "Hide password"
+                        } else {
+                          "Show password"
+                        },
+                    )
+                  }
+                }
+              },
             )
 
             if (config.showForgotPassword) {
@@ -310,12 +362,41 @@ internal fun LoginFooter(
   modifier: Modifier = Modifier,
   onPrivacyPolicyClick: (() -> Unit)? = null,
 ) {
-  val footerText =
-    if (onPrivacyPolicyClick != null) {
-      "By continuing, you agree to the platform Terms and Conditions and acknowledge the Privacy Policy."
-    } else {
-      "By continuing, you agree to the platform Terms and Conditions."
+  val linkColor = MaterialTheme.colorScheme.primary
+
+  val annotatedText = buildAnnotatedString {
+    append("By continuing, you agree to the platform ")
+
+    pushStringAnnotation(tag = "TERMS", annotation = "terms")
+    withStyle(
+      SpanStyle(
+        color = linkColor,
+        textDecoration = TextDecoration.Underline,
+        fontWeight = FontWeight.Medium,
+      )
+    ) {
+      append("Terms and Conditions")
     }
+    pop()
+
+    if (onPrivacyPolicyClick != null) {
+      append(" and acknowledge the ")
+
+      pushStringAnnotation(tag = "PRIVACY", annotation = "privacy")
+      withStyle(
+        SpanStyle(
+          color = linkColor,
+          textDecoration = TextDecoration.Underline,
+          fontWeight = FontWeight.Medium,
+        )
+      ) {
+        append("Privacy Policy")
+      }
+      pop()
+    }
+
+    append(".")
+  }
 
   Surface(
     modifier = modifier,
@@ -326,16 +407,23 @@ internal fun LoginFooter(
       modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-      Text(
-        text = footerText,
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        textAlign = TextAlign.Center,
+      ClickableText(
+        text = annotatedText,
+        style =
+          MaterialTheme.typography.bodySmall.copy(
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+          ),
+        onClick = { offset ->
+          annotatedText.getStringAnnotations(start = offset, end = offset).firstOrNull()?.let {
+            annotation ->
+            when (annotation.tag) {
+              "TERMS" -> onTermsAndConditionsClick()
+              "PRIVACY" -> onPrivacyPolicyClick?.invoke()
+            }
+          }
+        },
       )
-      TextButton(onClick = onTermsAndConditionsClick) { Text("Terms and Conditions") }
-      if (onPrivacyPolicyClick != null) {
-        TextButton(onClick = onPrivacyPolicyClick) { Text("Privacy Policy") }
-      }
     }
   }
 }

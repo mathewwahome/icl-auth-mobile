@@ -28,12 +28,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.savedstate.read
-import dev.ohs.player.auth.IclAuth
-import dev.ohs.player.auth.IclAuthConfig
 import dev.ohs.player.library.registry.LocalViewRegistry
 import dev.ohs.player.reference.app.feature.group.list.GroupListScreen
 import dev.ohs.player.reference.app.feature.group.profile.GroupProfileScreen
 import dev.ohs.player.reference.app.feature.patient.profile.PatientProfileScreen
+import icl.ohs.libs.auth.IclAuth
+import icl.ohs.libs.auth.IclAuthConfig
 
 private const val GROUP_LIST_ROUTE = "groupList"
 private const val GROUP_PROFILE_ROUTE = "groupProfile"

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.ohs.player.auth
+package icl.ohs.libs.auth
 
 import kotlin.time.Clock
 import kotlin.time.Instant

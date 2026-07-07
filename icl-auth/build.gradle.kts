@@ -27,7 +27,7 @@ plugins {
 kotlin {
   // TODO(AGP-9.0): rename `androidLibrary { }` to `android { }` once AGP is upgraded.
   androidLibrary {
-    namespace = "dev.ohs.player.auth"
+    namespace = "icl.ohs.libs.auth"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -46,31 +46,21 @@ kotlin {
   @OptIn(ExperimentalWasmDsl::class) wasmJs { browser() }
 
   sourceSets {
-    all {
-      kotlin.setSrcDirs(emptyList<String>())
-      resources.setSrcDirs(emptyList<String>())
+    commonMain.dependencies {
+      implementation(libs.compose.runtime)
+      implementation(libs.compose.ui)
+      implementation(libs.compose.foundation)
+      implementation(libs.compose.material3)
+      implementation(libs.kotlinx.serialization.json)
+      implementation(libs.ktor.client.core)
+      implementation(libs.ktor.client.cio)
+      implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
     }
 
-    commonMain {
-      kotlin.setSrcDirs(listOf("src/libraryCommonMain/kotlin"))
-      dependencies {
-        implementation(libs.compose.runtime)
-        implementation(libs.compose.ui)
-        implementation(libs.compose.foundation)
-        implementation(libs.compose.material3)
-        implementation(libs.kotlinx.serialization.json)
-        implementation(libs.ktor.client.core)
-        implementation(libs.ktor.client.cio)
-      }
-    }
-
-    commonTest {
-      kotlin.setSrcDirs(listOf("src/libraryCommonTest/kotlin"))
-      dependencies {
-        implementation(libs.kotlin.test)
-        implementation(libs.kotlinx.coroutines.test)
-        implementation(libs.ktor.client.mock)
-      }
+    commonTest.dependencies {
+      implementation(libs.kotlin.test)
+      implementation(libs.kotlinx.coroutines.test)
+      implementation(libs.ktor.client.mock)
     }
   }
 }

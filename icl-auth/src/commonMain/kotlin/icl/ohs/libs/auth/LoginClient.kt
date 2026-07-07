@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.ohs.player.auth
+package icl.ohs.libs.auth
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
