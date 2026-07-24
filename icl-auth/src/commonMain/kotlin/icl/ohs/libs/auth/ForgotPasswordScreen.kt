@@ -39,11 +39,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -53,17 +50,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
+import icl.ohs.libs.auth.viewmodel.ForgotPasswordViewModel
 
 internal const val FORGOT_PASSWORD_EMAIL_TAG = "forgot_password_email"
 internal const val FORGOT_PASSWORD_SUBMIT_BUTTON_TAG = "forgot_password_submit_button"
 internal const val FORGOT_PASSWORD_HAVE_CODE_TAG = "forgot_password_have_code_button"
 
-data class ForgotPasswordScreenConfig(
-  val showLogo: Boolean = true,
-  val emptyEmailMessage: String = "Enter your username or email to continue.",
-)
-
+/** Pure UI: form state, validation, and the submit call live in [ForgotPasswordViewModel]. */
 @Composable
 fun ForgotPasswordScreen(
   onSubmit: suspend (identifier: String) -> Result<Unit>,
@@ -73,13 +66,14 @@ fun ForgotPasswordScreen(
   initialIdentifier: String = "",
   onIAlreadyHaveCodeClick: (String) -> Unit = {},
 ) {
-  var identifier by rememberSaveable(initialIdentifier) { mutableStateOf(initialIdentifier) }
-  var errorMessage by rememberSaveable { mutableStateOf<String?>(null) }
-  var isSubmitting by rememberSaveable { mutableStateOf(false) }
-  var isSubmitted by rememberSaveable { mutableStateOf(false) }
-  val coroutineScope = rememberCoroutineScope()
+  val viewModel =
+    remember(config, initialIdentifier) {
+      ForgotPasswordViewModel(config = config, initialIdentifier = initialIdentifier)
+    }
 
-  val canSubmit = identifier.isNotBlank() && !isSubmitting
+  DisposableEffect(viewModel) { onDispose { viewModel.clear() } }
+
+  val canSubmit = viewModel.canSubmit
 
   Scaffold(modifier = modifier.fillMaxSize(), containerColor = MaterialTheme.colorScheme.surface) {
     innerPadding ->
@@ -100,11 +94,11 @@ fun ForgotPasswordScreen(
           .imePadding(),
       contentAlignment = Alignment.Center,
     ) {
-      if (errorMessage != null) {
+      if (viewModel.errorMessage != null) {
         AuthMessageBanner(
-          message = errorMessage!!,
+          message = viewModel.errorMessage.orEmpty(),
           type = AuthMessageBannerType.Error,
-          onDismiss = { errorMessage = null },
+          onDismiss = viewModel::dismissError,
           modifier =
             Modifier.align(Alignment.TopCenter).padding(start = 20.dp, top = 12.dp, end = 20.dp),
         )
@@ -148,7 +142,7 @@ fun ForgotPasswordScreen(
             modifier = Modifier.fillMaxWidth().padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
           ) {
-            if (isSubmitted) {
+            if (viewModel.isSubmitted) {
               Text(
                 text = "If an account exists for that username, a reset link is on its way.",
                 style = MaterialTheme.typography.bodyMedium,
@@ -156,75 +150,38 @@ fun ForgotPasswordScreen(
               )
             } else {
               OutlinedTextField(
-                value = identifier,
-                onValueChange = {
-                  identifier = it
-                  errorMessage = null
-                },
+                value = viewModel.identifier,
+                onValueChange = viewModel::onIdentifierChange,
                 modifier = Modifier.fillMaxWidth().testTag(FORGOT_PASSWORD_EMAIL_TAG),
                 label = { Text("Username or email") },
                 placeholder = { Text("Enter your username or email") },
                 singleLine = true,
-                enabled = !isSubmitting,
+                enabled = !viewModel.isSubmitting,
                 keyboardOptions =
                   KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Done),
                 keyboardActions =
-                  KeyboardActions(
-                    onDone = {
-                      if (canSubmit) {
-                        coroutineScope.launch {
-                          isSubmitting = true
-                          errorMessage = null
-                          onSubmit(identifier)
-                            .onSuccess { isSubmitted = true }
-                            .onFailure { errorMessage = config.emptyEmailMessage }
-                          isSubmitting = false
-                        }
-                      }
-                    }
-                  ),
+                  KeyboardActions(onDone = { if (canSubmit) viewModel.submit(onSubmit) }),
               )
 
               Button(
-                onClick = {
-                  if (identifier.isBlank()) {
-                    errorMessage = config.emptyEmailMessage
-                    return@Button
-                  }
-                  coroutineScope.launch {
-                    isSubmitting = true
-                    errorMessage = null
-                    onSubmit(identifier)
-                      .onSuccess { isSubmitted = true }
-                      .onFailure { errorMessage = it.message ?: config.emptyEmailMessage }
-                    isSubmitting = false
-                  }
-                },
+                onClick = { viewModel.submit(onSubmit) },
                 modifier = Modifier.fillMaxWidth().testTag(FORGOT_PASSWORD_SUBMIT_BUTTON_TAG),
                 enabled = canSubmit,
                 shape = RoundedCornerShape(18.dp),
               ) {
-                Text(if (isSubmitting) "Sending..." else "Send reset link")
+                Text(if (viewModel.isSubmitting) "Sending..." else "Send reset link")
               }
             }
 
             TextButton(
-              onClick = {
-                val trimmedIdentifier = identifier.trim()
-                if (trimmedIdentifier.isBlank()) {
-                  errorMessage = config.emptyEmailMessage
-                  return@TextButton
-                }
-
-                onIAlreadyHaveCodeClick(trimmedIdentifier)
-              },
+              onClick = { viewModel.submitIAlreadyHaveCode(onIAlreadyHaveCodeClick) },
               modifier = Modifier.testTag(FORGOT_PASSWORD_HAVE_CODE_TAG),
-              enabled = !isSubmitting,
+              enabled = !viewModel.isSubmitting,
             ) {
               Text("I already have the code")
             }
 
-            TextButton(onClick = onBackToLoginClick, enabled = !isSubmitting) {
+            TextButton(onClick = onBackToLoginClick, enabled = !viewModel.isSubmitting) {
               Text("Back to login")
             }
           }

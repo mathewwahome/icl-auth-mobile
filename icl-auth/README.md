@@ -103,7 +103,7 @@ API handling.
 ```kotlin
 import icl.ohs.libs.auth.IclAuth
 import icl.ohs.libs.auth.IclAuthConfig
-import icl.ohs.libs.auth.InMemoryAuthSessionStore
+import icl.ohs.libs.auth.model.InMemoryAuthSessionStore
 
 private val AUTH_CONFIG =
   IclAuthConfig(
@@ -234,8 +234,8 @@ IclAuth.clear()
 Provide your own `AuthSessionStore` if you want to integrate persistence:
 
 ```kotlin
-import icl.ohs.libs.auth.AuthSession
-import icl.ohs.libs.auth.AuthSessionStore
+import icl.ohs.libs.auth.model.AuthSession
+import icl.ohs.libs.auth.model.AuthSessionStore
 
 class MySessionStore : AuthSessionStore {
   override var session: AuthSession? = null

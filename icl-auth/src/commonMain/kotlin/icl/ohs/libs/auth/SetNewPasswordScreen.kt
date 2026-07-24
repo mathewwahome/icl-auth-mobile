@@ -42,12 +42,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -58,13 +53,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
+import icl.ohs.libs.auth.model.SetNewPasswordFailure
+import icl.ohs.libs.auth.model.SetNewPasswordSuccess
+import icl.ohs.libs.auth.viewmodel.SetNewPasswordViewModel
 
 internal const val SET_NEW_PASSWORD_CURRENT_TAG = "set_new_password_current"
 internal const val SET_NEW_PASSWORD_NEW_TAG = "set_new_password_new"
 internal const val SET_NEW_PASSWORD_CONFIRM_TAG = "set_new_password_confirm"
 internal const val SET_NEW_PASSWORD_BUTTON_TAG = "set_new_password_button"
 
+/** Pure UI: form state, validation, and the network call live in [SetNewPasswordViewModel]. */
 @Composable
 fun SetNewPasswordScreen(
   config: SetNewPasswordScreenConfig,
@@ -76,100 +74,32 @@ fun SetNewPasswordScreen(
   onTermsAndConditionsClick: () -> Unit = {},
   onPrivacyPolicyClick: (() -> Unit)? = null,
 ) {
-  var idNumber by rememberSaveable(initialIdNumber) { mutableStateOf(initialIdNumber) }
-  var currentPassword by rememberSaveable { mutableStateOf("") }
-  var newPassword by rememberSaveable { mutableStateOf("") }
-  var confirmPassword by rememberSaveable { mutableStateOf("") }
-  var errorMessage by rememberSaveable { mutableStateOf<String?>(null) }
-  var isSubmitting by rememberSaveable { mutableStateOf(false) }
-  val coroutineScope = rememberCoroutineScope()
-  val resolvedConfig = resolveSetNewPasswordConfig(screenConfig = config)
-  val httpClient =
-    remember(resolvedConfig.requestTimeoutMillis) {
-      buildLoginHttpClient(resolvedConfig.requestTimeoutMillis)
+  val viewModel =
+    remember(config, initialIdNumber) {
+      SetNewPasswordViewModel(config = config, initialIdNumber = initialIdNumber)
     }
-  val loginService = remember(httpClient) { LoginService(httpClient) }
 
-  DisposableEffect(httpClient) { onDispose { httpClient.close() } }
+  DisposableEffect(viewModel) { onDispose { viewModel.clear() } }
 
   SetNewPasswordScreenContent(
-    currentPassword = currentPassword,
-    newPassword = newPassword,
-    confirmPassword = confirmPassword,
+    currentPassword = viewModel.currentPassword,
+    newPassword = viewModel.newPassword,
+    confirmPassword = viewModel.confirmPassword,
     modifier = modifier,
     config = config,
-    errorMessage = errorMessage,
-    isSubmitting = isSubmitting,
+    errorMessage = viewModel.errorMessage,
+    isSubmitting = viewModel.isSubmitting,
+    canSubmit = viewModel.canSubmit,
     onTermsAndConditionsClick = onTermsAndConditionsClick,
     onPrivacyPolicyClick = onPrivacyPolicyClick,
-    onCurrentPasswordChange = {
-      currentPassword = it
-      errorMessage = null
-    },
-    onNewPasswordChange = {
-      newPassword = it
-      errorMessage = null
-    },
-    onConfirmPasswordChange = {
-      confirmPassword = it
-      errorMessage = null
-    },
+    onCurrentPasswordChange = viewModel::onCurrentPasswordChange,
+    onNewPasswordChange = viewModel::onNewPasswordChange,
+    onConfirmPasswordChange = viewModel::onConfirmPasswordChange,
     onSubmitClick = {
-      if (isSubmitting) {
-        return@SetNewPasswordScreenContent
-      }
-
-      val validationFailure =
-        validateSetNewPasswordForm(
-          config = resolvedConfig,
-          request =
-            SetNewPasswordReq(
-              temporaryPassword = currentPassword,
-              idNumber = idNumber,
-              password = newPassword,
-            ),
-          confirmPassword = confirmPassword,
-        )
-      if (validationFailure != null) {
-        errorMessage = validationFailure.message
-        onPasswordResetFailure(validationFailure)
-        return@SetNewPasswordScreenContent
-      }
-
-      coroutineScope.launch {
-        isSubmitting = true
-        errorMessage = null
-
-        try {
-          when (
-            val result =
-              loginService.setNewPassword(
-                config = resolvedConfig,
-                request =
-                  SetNewPasswordReq(
-                    temporaryPassword = currentPassword,
-                    idNumber = idNumber,
-                    password = newPassword,
-                  ),
-              )
-          ) {
-            is SetNewPasswordAttemptResult.Success -> {
-              errorMessage = null
-              onPasswordResetSuccess(result.value)
-            }
-
-            is SetNewPasswordAttemptResult.Failure -> {
-              errorMessage = result.value.message
-              onPasswordResetFailure(result.value)
-            }
-          }
-        } finally {
-          isSubmitting = false
-        }
-      }
+      viewModel.submit(onSuccess = onPasswordResetSuccess, onFailure = onPasswordResetFailure)
     },
     onBackToLoginClick = onBackToLoginClick,
-    onErrorDismiss = { errorMessage = null },
+    onErrorDismiss = viewModel::dismissError,
   )
 }
 
@@ -184,6 +114,7 @@ private fun SetNewPasswordScreenContent(
   onSubmitClick: () -> Unit,
   onErrorDismiss: () -> Unit,
   config: SetNewPasswordScreenConfig,
+  canSubmit: Boolean,
   modifier: Modifier = Modifier,
   errorMessage: String? = null,
   isSubmitting: Boolean = false,
@@ -191,12 +122,6 @@ private fun SetNewPasswordScreenContent(
   onTermsAndConditionsClick: () -> Unit = {},
   onPrivacyPolicyClick: (() -> Unit)? = null,
 ) {
-  val canSubmit =
-    currentPassword.isNotBlank() &&
-      newPassword.isNotBlank() &&
-      confirmPassword.isNotBlank() &&
-      !isSubmitting
-
   Scaffold(
     modifier = modifier.fillMaxSize(),
     containerColor = MaterialTheme.colorScheme.surface,
@@ -337,18 +262,3 @@ private fun SetNewPasswordScreenContent(
     }
   }
 }
-
-private fun validateSetNewPasswordForm(
-  config: ResolvedSetNewPasswordConfig,
-  request: SetNewPasswordReq,
-  confirmPassword: String,
-): SetNewPasswordFailure? =
-  when {
-    confirmPassword.isBlank() ->
-      SetNewPasswordFailure(message = config.messages.emptyConfirmPassword)
-
-    request.password != confirmPassword ->
-      SetNewPasswordFailure(message = config.messages.passwordMismatch)
-
-    else -> validateSetNewPasswordRequest(config = config, request = request)
-  }

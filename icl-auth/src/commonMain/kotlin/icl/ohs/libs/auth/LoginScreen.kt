@@ -35,9 +35,15 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -49,7 +55,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -72,11 +77,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
+import icl.ohs.libs.auth.model.LoginFailure
+import icl.ohs.libs.auth.model.LoginSuccess
+import icl.ohs.libs.auth.viewmodel.LoginViewModel
 
 internal const val LOGIN_USERNAME_TAG = "login_username"
 internal const val LOGIN_PASSWORD_TAG = "login_password"
 internal const val LOGIN_BUTTON_TAG = "login_button"
+
+/**
+ * Pure UI: reads state from [LoginViewModel] and forwards user actions to it. No network calls, no
+ * validation, and no form-state ownership live here anymore - see
+ * [icl.ohs.libs.auth.viewmodel.LoginViewModel].
+ */
 @Composable
 fun LoginScreen(
   config: LoginScreenConfig,
@@ -87,82 +100,22 @@ fun LoginScreen(
   onTermsAndConditionsClick: () -> Unit = {},
   onPrivacyPolicyClick: (() -> Unit)? = null,
 ) {
-  var username by rememberSaveable { mutableStateOf("") }
-  var password by rememberSaveable { mutableStateOf("") }
-  var errorMessage by rememberSaveable { mutableStateOf<String?>(null) }
-  var isSubmitting by rememberSaveable { mutableStateOf(false) }
-  val coroutineScope = rememberCoroutineScope()
-  val resolvedConfig = resolveLoginConfig(screenConfig = config)
-  val httpClient =
-    remember(resolvedConfig.requestTimeoutMillis) {
-      buildLoginHttpClient(resolvedConfig.requestTimeoutMillis)
-    }
-  val loginService = remember(httpClient) { LoginService(httpClient) }
+  val viewModel = remember(config) { LoginViewModel(config) }
 
-  DisposableEffect(httpClient) { onDispose { httpClient.close() } }
+  DisposableEffect(viewModel) { onDispose { viewModel.clear() } }
 
   LoginScreenContent(
-    username = username,
-    password = password,
+    username = viewModel.username,
+    password = viewModel.password,
     modifier = modifier,
-    errorMessage = errorMessage,
-    isSubmitting = isSubmitting,
+    errorMessage = viewModel.errorMessage,
+    isSubmitting = viewModel.isSubmitting,
     config = config,
-    onUsernameChange = {
-      username = it
-      errorMessage = null
-    },
-    onPasswordChange = {
-      password = it
-      errorMessage = null
-    },
-    onLoginClick = {
-      if (isSubmitting) {
-        return@LoginScreenContent
-      }
-
-      val validationFailure =
-        validateLoginRequest(config = resolvedConfig, username = username, password = password)
-      if (validationFailure != null) {
-        errorMessage = validationFailure.message
-        onLoginFailure(validationFailure)
-        return@LoginScreenContent
-      }
-
-      coroutineScope.launch {
-        isSubmitting = true
-        errorMessage = null
-
-        try {
-          when (
-            val result =
-              loginService.login(config = resolvedConfig, username = username, password = password)
-          ) {
-            is LoginAttemptResult.Success -> {
-              errorMessage = null
-              onLoginSuccess(result.value)
-            }
-
-            is LoginAttemptResult.Failure -> {
-              errorMessage = result.value.message
-              onLoginFailure(result.value)
-            }
-          }
-        } finally {
-          isSubmitting = false
-        }
-      }
-    },
-    onForgotPasswordClick = {
-      val trimmedUsername = username.trim()
-      if (trimmedUsername.isBlank()) {
-        errorMessage = resolvedConfig.messages.emptyUsername
-        return@LoginScreenContent
-      }
-
-      onForgotPasswordClick(trimmedUsername)
-    },
-    onErrorDismiss = { errorMessage = null },
+    onUsernameChange = viewModel::onUsernameChange,
+    onPasswordChange = viewModel::onPasswordChange,
+    onLoginClick = { viewModel.login(onSuccess = onLoginSuccess, onFailure = onLoginFailure) },
+    onForgotPasswordClick = { viewModel.submitForgotPassword(onForgotPasswordClick) },
+    onErrorDismiss = viewModel::dismissError,
     onTermsAndConditionsClick = onTermsAndConditionsClick,
     onPrivacyPolicyClick = onPrivacyPolicyClick,
   )
@@ -277,7 +230,9 @@ private fun LoginScreenContent(
                 KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
               trailingIcon = {
                 if (username.isNotEmpty()) {
-                  TextButton(onClick = { onUsernameChange("") }) { Text("Clear") }
+                  IconButton(onClick = { onUsernameChange("") }) {
+                    Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear username")
+                  }
                 }
               },
             )
@@ -305,11 +260,18 @@ private fun LoginScreenContent(
                   verticalAlignment = Alignment.CenterVertically,
                 ) {
                   if (password.isNotEmpty()) {
-                    TextButton(onClick = { onPasswordChange("") }) { Text("Clear") }
+                    IconButton(onClick = { onPasswordChange("") }) {
+                      Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear password")
+                    }
                   }
 
-                  TextButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Text(if (passwordVisible) "Hide" else "Show")
+                  IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                      imageVector =
+                        if (passwordVisible) Icons.Default.VisibilityOff
+                        else Icons.Default.Visibility,
+                      contentDescription = if (passwordVisible) "Hide password" else "Show password",
+                    )
                   }
                 }
               },

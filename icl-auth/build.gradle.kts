@@ -64,6 +64,7 @@ kotlin {
       implementation(libs.compose.foundation)
       implementation(libs.compose.material3)
       implementation(libs.compose.materialIconsCore)
+      implementation(libs.compose.materialIconsExtended)
       implementation(libs.compose.uiToolingPreview)
       implementation(libs.kotlinx.serialization.json)
       implementation(libs.ktor.client.core)
